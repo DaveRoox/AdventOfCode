@@ -9,14 +9,14 @@
 
 using std::runtime_error;
 
-Tape::Tape() noexcept: cells{0}, current_cell_index{0}, state{nullptr} {
+Tape::Tape() noexcept: cells{false}, current_cell_index{0}, state{nullptr} {
     current_cell = cells.begin();
 }
 
 Tape::Tape(State &t_state, size_t t_current_cell_index) noexcept: state{&t_state},
                                                                   current_cell_index{t_current_cell_index} {
     for (size_t i = 0; i <= current_cell_index; ++i)
-        cells.push_back(0);
+        cells.push_back(false);
     current_cell = cells.begin();
 }
 
@@ -25,12 +25,14 @@ void Tape::set_value(const elem_t &new_value) noexcept { *current_cell = new_val
 void Tape::move_to(const direction_t &direction) noexcept {
     switch (direction) {
         case direction_t::left:
-            if (current_cell_index > 0) --current_cell_index;
-            else cells.push_front(0);
+            if (current_cell_index > 0)
+                --current_cell_index;
+            else cells.push_front(false);
             --current_cell;
             return;
         case direction_t::right:
-            if (++current_cell_index == cells.size()) cells.push_back(0);
+            if (++current_cell_index == cells.size())
+                cells.push_back(false);
             ++current_cell;
             return;
     }

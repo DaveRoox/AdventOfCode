@@ -13,7 +13,7 @@ class State;
 
 class Tape {
 
-    using elem_t = unsigned short;
+    using elem_t = bool;
 
 public:
     explicit Tape() noexcept;

@@ -41,10 +41,11 @@ namespace _2018 {
                 result_t total_frequency = 0;
                 unordered_set<elem_t> frequencies_set{0};
                 auto max_iterations = ULLONG_MAX;
-                while (max_iterations--)
+                do
                     for (const auto &frequency : frequencies)
                         if (!frequencies_set.insert(total_frequency += frequency).second)
                             return total_frequency;
+                while (--max_iterations);
 
                 throw runtime_error{"Maximum number of iterations reached"};
             };

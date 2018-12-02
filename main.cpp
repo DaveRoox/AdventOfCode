@@ -10,9 +10,11 @@ using std::stringstream;
 using std::right;
 using std::left;
 using std::endl;
+using std::internal;
 using std::string;
 using std::chrono::steady_clock;
 using std::chrono::duration_cast;
+using std::chrono::microseconds;
 
 struct challenge {
     u_int year;
@@ -20,7 +22,7 @@ struct challenge {
     u_short part;
 };
 
-template<typename Main, typename time_unit = std::chrono::microseconds>
+template<typename Main, typename time_unit = microseconds>
 void execute(challenge &&ch, Main && func) {
     auto[year, day, part] = ch;
     auto start = steady_clock::now();
@@ -30,7 +32,7 @@ void execute(challenge &&ch, Main && func) {
     ss1 << "Result of {day: " << day << ", part: " << part << ", year: " << year << "}: " << result;
     ss2 << "(elapsed time: " << duration << " us)\n";
     cout.width(line_width), cout.fill('.');
-    cout << left << ss1.str() << std::internal << right << ss2.str();
+    cout << left << ss1.str() << internal << right << ss2.str();
 }
 
 int main() {

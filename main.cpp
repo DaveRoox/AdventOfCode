@@ -46,4 +46,5 @@ int main() {
     execute({2018, 2, 1}, _2018::day2::part1::main);
     execute({2018, 2, 2}, _2018::day2::part2::main);*/
     execute({2018, 3, 1}, _2018::day3::part1::main);
+    execute({2018, 3, 2}, _2018::day3::part2::main);
 }

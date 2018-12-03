@@ -8,7 +8,6 @@
 #include <iostream>
 #include <fstream>
 #include <unordered_map>
-#include <sstream>
 #include <vector>
 
 namespace _2018 {
@@ -32,7 +31,6 @@ namespace _2018 {
             using std::move;
             using std::to_string;
             using std::unordered_map;
-            using std::stringstream;
             using std::vector;
 
             pair<size_t, size_t> parse_pair(const string &s) {

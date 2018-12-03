@@ -36,7 +36,7 @@ void execute(challenge &&ch, Main && func) {
 }
 
 int main() {
-    execute({2017, 1, 1}, _2017::day1::part1::main);
+    /*execute({2017, 1, 1}, _2017::day1::part1::main);
     execute({2017, 1, 2}, _2017::day1::part2::main);
     execute({2017, 2, 1}, _2017::day2::part1::main);
     execute({2017, 2, 2}, _2017::day2::part2::main);
@@ -44,5 +44,6 @@ int main() {
     execute({2018, 1, 1}, _2018::day1::part1::main);
     execute({2018, 1, 2}, _2018::day1::part2::main);
     execute({2018, 2, 1}, _2018::day2::part1::main);
-    execute({2018, 2, 2}, _2018::day2::part2::main);
+    execute({2018, 2, 2}, _2018::day2::part2::main);*/
+    execute({2018, 3, 1}, _2018::day3::part1::main);
 }

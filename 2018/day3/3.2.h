@@ -82,10 +82,9 @@ namespace _2018 {
                             auto x = current_claim.left + w;
                             auto y = current_claim.top + h;
                             auto position{move(to_string(x) + '.' + to_string(y))};
-                            if (positions.find(position) != positions.end()) {
-                                if (auto first_claim{positions[position]}; first_claim->is_intact)
-                                    first_claim->is_intact = current_claim.is_intact = false;
-                            } else
+                            if (positions.find(position) != positions.end())
+                                current_claim.is_intact = positions[position]->is_intact = false;
+                            else
                                 positions[position] = &current_claim;
                         }
 

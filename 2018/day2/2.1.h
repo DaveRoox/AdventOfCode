@@ -33,11 +33,13 @@ namespace _2018 {
                 return false;
             }
 
-            inline bool has_any_letter_with_exactly_two_occurrences(
-                    const string &s) { return has_any_letter_with_exactly_N_occurrences(s, 2); }
+            inline bool has_any_letter_with_exactly_two_occurrences(const string &s) {
+                return has_any_letter_with_exactly_N_occurrences(s, 2);
+            }
 
-            inline bool has_any_letter_with_exactly_three_occurrences(
-                    const string &s) { return has_any_letter_with_exactly_N_occurrences(s, 3); }
+            inline bool has_any_letter_with_exactly_three_occurrences(const string &s) {
+                return has_any_letter_with_exactly_N_occurrences(s, 3);
+            }
 
             result_t main() {
 

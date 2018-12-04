@@ -40,7 +40,7 @@ namespace _2017 {
                     istringstream is{line};
                     vector<elem_t> v{istream_iterator<elem_t>{is}, istream_iterator<elem_t>()};
                     sort(v.begin(), v.end(), std::greater<>());
-                    [=, &v, &result]() {
+                    [&v, &result]() {
                         for (size_t i = 0; i < v.size(); ++i) {
                             for (size_t j = v.size() - 1; j > i; --j)
                                 if (v[i] % v[j] == 0) {

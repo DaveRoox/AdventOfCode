@@ -47,9 +47,9 @@ namespace _2018 {
                 getline(in, s);
 
                 vector<string> substrings;
-                size_t last = 0, next = 0;
-                while ((next = s.find(' ', last)) != string::npos)
-                    substrings.emplace_back(move(s.substr(last, next - last))), last = next + 1;
+                size_t last = 0;
+                for (size_t next = s.find(' ', last); next != string::npos; last = next + 1, next = s.find(' ', last))
+                    substrings.emplace_back(move(s.substr(last, next - last)));
                 substrings.emplace_back(move(s.substr(last)));
 
                 const auto[left, top]      = parse_pair(substrings.at(2));

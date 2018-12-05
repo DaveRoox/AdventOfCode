@@ -50,6 +50,7 @@ namespace _2017 {
                         }
                     }();
                 }
+                in.close();
 
                 return result;
             }

@@ -46,6 +46,7 @@ namespace _2018 {
 
                 /* Storing all the elements in a vector */
                 vector<elem_t> ids{istream_iterator<elem_t>{in}, istream_iterator<elem_t>{}};
+                in.close();
 
                 /* Checking for the result */
                 for (size_t i = 0, size = ids.size() - 1; i < size; ++i) {

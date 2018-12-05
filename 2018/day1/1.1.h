@@ -33,6 +33,7 @@ namespace _2018 {
                 elem_t total_frequency = 0;
                 for (elem_t current_frequency; in >> current_frequency;)
                     total_frequency += current_frequency;
+                in.close();
 
                 return total_frequency;
             }

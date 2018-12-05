@@ -36,6 +36,7 @@ namespace _2017 {
                 vector<elem_t> digits;
                 for (char char_digit; in >> char_digit;)
                     digits.push_back(char_digit - '0');
+                in.close();
                 size_t half_size = digits.size() / 2;
                 for (size_t i = 0; i < half_size; ++i)
                     digits.push_back(digits.at(i));

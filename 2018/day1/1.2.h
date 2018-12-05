@@ -36,6 +36,7 @@ namespace _2018 {
 
                 /* Storing all the elements in a vector */
                 vector<elem_t> frequencies{istream_iterator<elem_t>{in}, istream_iterator<elem_t>{}};
+                in.close();
 
                 /* Cycling over the array until a total_frequency is met twice */
                 result_t total_frequency = 0;

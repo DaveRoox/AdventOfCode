@@ -74,6 +74,7 @@ namespace _2018 {
                 vector<Claim> claims;
                 while (!in.eof())
                     claims.emplace_back(move(parse(in)));
+                in.close();
 
                 unordered_map<string, Claim *> positions;
                 for (auto &current_claim : claims)

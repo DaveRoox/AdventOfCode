@@ -83,6 +83,7 @@ namespace _2018 {
                                 positions[position] = false;
                         }
                 }
+                in.close();
 
                 return square_inches;
             }

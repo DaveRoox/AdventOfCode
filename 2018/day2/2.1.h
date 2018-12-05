@@ -57,6 +57,7 @@ namespace _2018 {
                     if (has_any_letter_with_exactly_three_occurrences(s))
                         ++with_three;
                 }
+                in.close();
 
                 return with_two * with_three;
             }

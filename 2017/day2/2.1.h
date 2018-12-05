@@ -47,6 +47,7 @@ namespace _2017 {
                     }
                     result += max - min;
                 }
+                in.close();
 
                 return result;
             }

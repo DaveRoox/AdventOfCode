@@ -35,6 +35,7 @@ namespace _2017 {
                 vector<elem_t> digits;
                 for (char char_digit; in >> char_digit;)
                     digits.push_back(char_digit - '0');
+                in.close();
                 digits.push_back(digits.at(0));
 
                 /* Summing up all the digits that are equal to the successive one */

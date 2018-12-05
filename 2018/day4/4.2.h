@@ -41,6 +41,7 @@ namespace _2018 {
                 vector<elem_t> records;
                 for (elem_t e; getline(in, e);)
                     records.emplace_back(move(e));
+                in.close();
                 sort(records.begin(), records.end());
 
                 size_t current_guard_id;

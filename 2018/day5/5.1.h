@@ -26,7 +26,7 @@ namespace _2018 {
             using std::islower;
             using std::isupper;
 
-            size_t length_of_exploded(const elem_t &polymer) {
+            size_t length_of_polymer_after_reaction(const elem_t &polymer) {
                 unordered_set<size_t> ignored;
                 for (size_t prev = 0, curr = 1; curr < polymer.size(); ++curr) {
                     auto c_prev = polymer.at(prev), c_curr = polymer.at(curr);
@@ -54,7 +54,7 @@ namespace _2018 {
                 in >> polymer;
                 in.close();
 
-                return length_of_exploded(polymer);
+                return length_of_polymer_after_reaction(polymer);
             }
 
         }

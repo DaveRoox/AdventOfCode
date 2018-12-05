@@ -44,44 +44,44 @@ namespace _2018 {
                 in.close();
                 sort(records.begin(), records.end());
 
-                size_t current_guard_id;
+                size_t new_guard_id;
                 unordered_map<size_t, int[60]> record_map;
                 for (const auto &record : records) {
                     if (auto pos = id_pos; record.at(pos) == '#') { // Switching guard
-                        current_guard_id = 0;
+                        new_guard_id = 0;
                         while (record.at(++pos) != ' ')
-                            current_guard_id = 10 * current_guard_id + (record.at(pos) - '0');
-                        if (record_map.find(current_guard_id) == record_map.end())
-                            for (auto &minutes : record_map[current_guard_id])
+                            new_guard_id = 10 * new_guard_id + (record.at(pos) - '0');
+                        if (record_map.find(new_guard_id) == record_map.end())
+                            for (auto &minutes : record_map[new_guard_id])
                                 minutes = 0;
                     } else { // Start sleeping or waking up
                         size_t index = 0;
                         for (const char c : record.substr(minutes_pos, 2))
                             index = 10 * index + (c - '0');
                         if (record.at(falls_pos) == 'f') // falls asleep
-                            ++record_map[current_guard_id][index];
+                            ++record_map[new_guard_id][index];
                         else // wakes up
-                            --record_map[current_guard_id][index];
+                            --record_map[new_guard_id][index];
                     }
                 }
 
                 size_t most_frequently_asleep_on_the_same_minute_guard;
                 u_short most_frequently_asleep_minute;
                 int max_sleep_frequency = 0;
-                for (auto &[guard_id, vec] : record_map) {
-                    int local_max_sleep_frequency = 0;
-                    u_short local_max_sleep_frequency_minute;
+                for (auto &[current_guard_id, vec] : record_map) {
+                    int current_max_sleep_frequency = 0;
+                    u_short current_max_sleep_frequency_minute;
                     for (u_short minute = 0; minute < 60; ++minute) {
                         vec[minute] += vec[minute - 1];
-                        if (vec[minute] >= local_max_sleep_frequency) {
-                            local_max_sleep_frequency = vec[minute];
-                            local_max_sleep_frequency_minute = minute;
+                        if (vec[minute] >= current_max_sleep_frequency) {
+                            current_max_sleep_frequency = vec[minute];
+                            current_max_sleep_frequency_minute = minute;
                         }
                     }
-                    if (local_max_sleep_frequency > max_sleep_frequency) {
-                        max_sleep_frequency = local_max_sleep_frequency;
-                        most_frequently_asleep_on_the_same_minute_guard = guard_id;
-                        most_frequently_asleep_minute = local_max_sleep_frequency_minute;
+                    if (current_max_sleep_frequency > max_sleep_frequency) {
+                        max_sleep_frequency = current_max_sleep_frequency;
+                        most_frequently_asleep_on_the_same_minute_guard = current_guard_id;
+                        most_frequently_asleep_minute = current_max_sleep_frequency_minute;
                     }
                 }
 

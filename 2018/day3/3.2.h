@@ -69,8 +69,6 @@ namespace _2018 {
                 if (!in)
                     throw runtime_error{string{"File not found: "} + filename};
 
-                result_t id;
-
                 vector<Claim> claims;
                 while (!in.eof())
                     claims.emplace_back(move(parse(in)));

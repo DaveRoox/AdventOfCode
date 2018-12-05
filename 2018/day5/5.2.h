@@ -26,13 +26,11 @@ namespace _2018 {
             using std::islower;
             using std::isupper;
 
-            size_t length_of_exploded(const elem_t &polymer, char excluded) {
+            size_t length_of_polymer_after_reaction(const elem_t &polymer, char excluded) {
                 unordered_set<size_t> ignored;
                 size_t prev = 0;
                 while (prev < polymer.size() and tolower(polymer.at(prev)) == excluded)
                     ignored.insert(prev), ++prev;
-                if (auto diff = polymer.size() - prev; diff < 2)
-                    return diff;
                 for (size_t curr = prev + 1; curr < polymer.size(); ++curr) {
                     auto c_prev = polymer.at(prev), c_curr = polymer.at(curr);
                     if (tolower(c_curr) != excluded) {
@@ -44,8 +42,7 @@ namespace _2018 {
                                 prev = curr;
                         } else
                             prev = curr;
-                    }
-                    else
+                    } else
                         ignored.insert(curr);
                 }
                 return polymer.size() - ignored.size();
@@ -63,9 +60,9 @@ namespace _2018 {
                 in >> polymer;
                 in.close();
 
-                size_t min_length = length_of_exploded(polymer, 'a');
+                size_t min_length = length_of_polymer_after_reaction(polymer, 'a');
                 for (char c = 'b'; c <= 'z'; ++c)
-                    if (auto curr_length = length_of_exploded(polymer, c); curr_length < min_length)
+                    if (auto curr_length = length_of_polymer_after_reaction(polymer, c); curr_length < min_length)
                         min_length = curr_length;
 
                 return min_length;

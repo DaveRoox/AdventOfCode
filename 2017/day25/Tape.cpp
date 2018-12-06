@@ -8,6 +8,7 @@
 #include <numeric>
 
 using std::runtime_error;
+using std::accumulate;
 
 Tape::Tape() noexcept: cells{false}, current_cell_index{0}, state{nullptr} {
     current_cell = cells.begin();
@@ -54,5 +55,5 @@ void Tape::step_for(size_t times) {
 }
 
 size_t Tape::diagnostic_checksum() const noexcept {
-    return std::accumulate(cells.begin(), cells.end(), static_cast<size_t>(0));
+    return accumulate(cells.begin(), cells.end(), static_cast<size_t>(0));
 }

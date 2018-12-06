@@ -7,7 +7,7 @@
 
 #include <iostream>
 #include <fstream>
-#include <unordered_set>
+#include <stack>
 
 namespace _2018 {
 
@@ -21,25 +21,23 @@ namespace _2018 {
             using std::fstream;
             using std::runtime_error;
             using std::string;
-            using std::unordered_set;
-            using std::tolower;
-            using std::islower;
-            using std::isupper;
+            using std::stack;
 
-            size_t length_of_polymer_after_reaction(const elem_t &polymer) {
-                unordered_set<size_t> ignored;
-                for (size_t prev = 0, curr = 1; curr < polymer.size(); ++curr) {
-                    auto c_prev = polymer.at(prev), c_curr = polymer.at(curr);
-                    if (tolower(c_prev) == tolower(c_curr) and islower(c_prev) == isupper(c_curr)) {
-                        ignored.insert(prev), ignored.insert(curr);
-                        while (prev + 1 > 0 and ignored.find(prev) != ignored.end())
-                            --prev;
-                        if (prev + 1 == 0)
-                            prev = curr;
-                    } else
-                        prev = curr;
-                }
-                return polymer.size() - ignored.size();
+            bool matches(char lhs, char rhs) {
+                if (rhs >= lhs)
+                    return (rhs - lhs) == ('a' - 'A');
+                else
+                    return matches(rhs, lhs);
+            }
+
+            size_t length_of_polymer_after_reaction(const elem_t &s) {
+                stack<char> stack;
+                for (auto c : s)
+                    if (stack.empty() || !matches(stack.top(), c))
+                        stack.push(c);
+                    else
+                        stack.pop();
+                return stack.size();
             }
 
             result_t main() {

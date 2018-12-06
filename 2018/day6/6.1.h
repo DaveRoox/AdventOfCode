@@ -87,11 +87,7 @@ namespace _2018 {
                     coordinate.row -= min_row, coordinate.col -= min_col;
 
                 auto closest_coordinate_to = [&coordinates](const pair<size_t, size_t> &cell) {
-                    static unordered_map<size_t, unordered_map<size_t, id_t>> result_map;
-                    const auto &[x, y] = cell;
-                    if (result_map.find(x) == result_map.end() or result_map[x].find(y) == result_map[x].end())
-                        result_map[x][y] = closest_coordinate(coordinates, cell);
-                    return result_map[x][y];
+                    return closest_coordinate(coordinates, cell);
                 };
 
                 size_t rows = max_row - min_row + 1;

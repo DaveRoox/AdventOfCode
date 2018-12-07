@@ -83,6 +83,7 @@ namespace _2018 {
                     if (col > max_col) max_col = col;
                     coordinates.emplace_back(Coordinate{row, col, to_string(++coordinate_id)});
                 }
+                in.close();
                 for (auto &coordinate : coordinates)
                     coordinate.row -= min_row, coordinate.col -= min_col;
 

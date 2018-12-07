@@ -62,6 +62,7 @@ namespace _2018 {
                     if (col > max_col) max_col = col;
                     coordinates.emplace_back(Coordinate{row, col});
                 }
+                in.close();
                 for (auto &coordinate : coordinates)
                     coordinate.row -= min_row, coordinate.col -= min_col;
 
@@ -72,11 +73,14 @@ namespace _2018 {
                 for (size_t i = 0; i < rows; ++i)
                     for (size_t j = 0; j < cols; ++j) {
                         long li = static_cast<long>(i), lj = static_cast<long>(j);
-                        size_t d = accumulate(coordinates.begin(), coordinates.end(), 0ul,
-                                              [li, lj](const auto &acc, const auto &c) {
-                                                  return acc + abs(static_cast<long>(c.row) - li) +
-                                                         abs(static_cast<long>(c.col) - lj);
-                                              });
+                        size_t d = accumulate(
+                                coordinates.begin(),
+                                coordinates.end(),
+                                0ul,
+                                [li, lj](const auto &acc, const auto &c) {
+                                    return acc + abs(static_cast<long>(c.row) - li) +
+                                           abs(static_cast<long>(c.col) - lj);
+                                });
                         if (d < region_limit)
                             ++cells_in_region;
                     }

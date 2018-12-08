@@ -6,8 +6,6 @@
 #ifndef ADVENTOFCODE_2018_8_2_H
 #define ADVENTOFCODE_2018_8_2_H
 
-#include "8.1.h"
-
 #include <fstream>
 #include <vector>
 #include <numeric>

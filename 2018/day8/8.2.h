@@ -18,7 +18,17 @@ namespace _2018 {
 
         namespace part2 {
 
-            using elem_t = part1::Node;
+            struct Node {
+                std::vector<Node> children;
+                std::vector<size_t> metadata;
+
+                Node(std::vector<Node> &&t_children, std::vector<size_t> &&t_metadata) noexcept:
+                        children{move(t_children)}, metadata{move(t_metadata)} {}
+
+                Node(Node &&n) noexcept: children{move(n.children)}, metadata{move(n.metadata)} {}
+            };
+
+            using elem_t = Node;
             using result_t = size_t;
 
             using std::fstream;
@@ -26,8 +36,32 @@ namespace _2018 {
             using std::string;
             using std::vector;
             using std::accumulate;
+            using std::move;
 
-            size_t value(const part1::Node &node) {
+            elem_t get_node_at_index(size_t &current_index, const vector<size_t> &numbers) {
+
+                size_t n_of_children = numbers.at(current_index);
+                size_t n_of_metadata = numbers.at(++current_index);
+                ++current_index;
+
+                vector<elem_t> children;
+                for (size_t i = 0; i < n_of_children; ++i)
+                    children.emplace_back(move(get_node_at_index(current_index, numbers)));
+
+                auto first = numbers.begin() + current_index;
+                auto last = first + n_of_metadata;
+                vector<size_t> metadata{first, last};
+                current_index += n_of_metadata;
+
+                return {move(children), move(metadata)};
+            };
+
+            elem_t get_root(const vector<size_t> &numbers) {
+                size_t current_index = 0;
+                return get_node_at_index(current_index, numbers);
+            }
+
+            size_t value(const Node &node) {
                 if (node.children.empty())
                     return accumulate(node.metadata.begin(), node.metadata.end(), 0ul);
                 size_t result = 0;
@@ -49,9 +83,7 @@ namespace _2018 {
                 for (size_t e; in >> e;)
                     numbers.emplace_back(e);
 
-                size_t current_index = 0;
-                const auto &[_, root] = part1::parse_input(numbers, current_index);
-                return value(root);
+                return value(get_root(numbers));
             }
 
         }

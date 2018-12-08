@@ -5,7 +5,6 @@
 #ifndef ADVENTOFCODE_2018_3_2_H
 #define ADVENTOFCODE_2018_3_2_H
 
-#include <iostream>
 #include <fstream>
 #include <unordered_map>
 #include <vector>

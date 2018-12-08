@@ -5,7 +5,6 @@
 #ifndef ADVENTOFCODE_2018_1_1_H
 #define ADVENTOFCODE_2018_1_1_H
 
-#include <iostream>
 #include <fstream>
 
 namespace _2018 {

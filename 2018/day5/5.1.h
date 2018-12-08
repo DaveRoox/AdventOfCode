@@ -5,7 +5,6 @@
 #ifndef ADVENTOFCODE_2018_5_1_H
 #define ADVENTOFCODE_2018_5_1_H
 
-#include <iostream>
 #include <fstream>
 #include <stack>
 

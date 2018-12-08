@@ -5,7 +5,6 @@
 #ifndef ADVENTOFCODE_2017_25_2_H
 #define ADVENTOFCODE_2017_25_2_H
 
-#include <iostream>
 #include <fstream>
 
 namespace _2017 {

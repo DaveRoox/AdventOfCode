@@ -5,7 +5,6 @@
 #ifndef ADVENTOFCODE_2017_1_1_H
 #define ADVENTOFCODE_2017_1_1_H
 
-#include <iostream>
 #include <fstream>
 #include <vector>
 

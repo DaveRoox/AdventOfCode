@@ -1,6 +1,7 @@
 #include "2017.h"
 #include "2018.h"
 
+#include <iostream>
 #include <sstream>
 
 constexpr const unsigned short line_width = 75;
@@ -55,4 +56,6 @@ int main() {
     execute({2018, 6, 2}, _2018::day6::part2::main);
     execute({2018, 7, 1}, _2018::day7::part1::main);
     execute({2018, 7, 2}, _2018::day7::part2::main);
+    execute({2018, 8, 1}, _2018::day8::part1::main);
+    execute({2018, 8, 2}, _2018::day8::part2::main);
 }

@@ -7,7 +7,6 @@
 
 #include "7.1.h"
 
-#include <iostream>
 #include <fstream>
 #include <vector>
 #include <sstream>
@@ -59,14 +58,14 @@ namespace _2018 {
 
                 unordered_map<char, vector<char>> reverse_graph;
                 for (string e; getline(in, e);) {
-                    auto[v, u]{day7::part1::extract_nodes_from(e)};
+                    auto[v, u]{part1::extract_nodes_from(e)};
                     if (reverse_graph.find(v) == reverse_graph.end())
                         reverse_graph[v]; // Auto init to empty array
                     reverse_graph[u].emplace_back(v);
                 }
                 in.close();
 
-                auto ordered_tasks{move(day7::part1::main())};
+                auto ordered_tasks{move(part1::main())};
 
                 vector<u_short> workers_per_time;
                 unordered_map<char, size_t> end_times;

@@ -5,7 +5,6 @@
 #ifndef ADVENTOFCODE_2017_25_1_H
 #define ADVENTOFCODE_2017_25_1_H
 
-#include <iostream>
 #include <fstream>
 #include <vector>
 #include "Tape.h"

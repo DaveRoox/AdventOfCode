@@ -34,6 +34,7 @@ namespace _2018 {
             using std::string;
             using std::vector;
             using std::accumulate;
+            using std::istream_iterator;
             using std::move;
 
             elem_t get_node_at_index(size_t &current_index, const vector<size_t> &numbers) {
@@ -77,11 +78,7 @@ namespace _2018 {
                 if (!in)
                     throw runtime_error{string{"File not found: "} + filename};
 
-                vector<size_t> numbers;
-                for (size_t e; in >> e;)
-                    numbers.emplace_back(e);
-
-                return value(get_root(numbers));
+                return value(get_root({istream_iterator<size_t>{in}, istream_iterator<size_t>{}}));
             }
 
         }

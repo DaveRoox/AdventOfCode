@@ -23,6 +23,7 @@ namespace _2018 {
             using std::string;
             using std::vector;
             using std::accumulate;
+            using std::istream_iterator;
 
             result_t get_metadata_of_node_at_index(size_t &current_index, const vector<size_t> &numbers) {
 
@@ -55,11 +56,7 @@ namespace _2018 {
                 if (!in)
                     throw runtime_error{string{"File not found: "} + filename};
 
-                vector<size_t> numbers;
-                for (size_t e; in >> e;)
-                    numbers.emplace_back(e);
-
-                return get_metadata_of_root(numbers);
+                return get_metadata_of_root({istream_iterator<size_t>{in}, istream_iterator<size_t>{}});
             }
 
         }

@@ -23,27 +23,19 @@ namespace _2018 {
             using std::list;
 
             template<typename iter>
-            void rotate_helper_neg(iter &it, u_short by_positions, const iter &start, const iter &end) {
-                for (u_short _ = 0; _ < by_positions; ++_) {
+            auto rotate_neg(iter it, u_short by_positions, const iter &start, const iter &end) {
+                for (u_short _ = 0; _ < by_positions; ++_, --it)
                     if (it == start)
                         it = end;
-                    --it;
-                }
+                return it;
             }
 
             template<typename iter>
-            void rotate_helper_pos(iter &it, u_short by_positions, const iter &start, const iter &end) {
+            auto rotate_pos(iter it, u_short by_positions, const iter &start, const iter &end) {
                 for (u_short _ = 0; _ < by_positions; ++_)
                     if (++it == end)
                         it = start;
-            }
-
-            template<typename iter>
-            void rotate(iter &current_marble, short by_positions, const iter &start, const iter &end) {
-                if (by_positions >= 0)
-                    rotate_helper_pos(current_marble, static_cast<u_short>(by_positions), start, end);
-                else
-                    rotate_helper_neg(current_marble, static_cast<u_short>(-by_positions), start, end);
+                return it;
             }
 
             result_t get_max_score(unsigned players, size_t last) {
@@ -53,15 +45,22 @@ namespace _2018 {
                     score = 0;
 
                 result_t max_score = 0;
-
                 list<size_t> marbles{0};
+
+                auto rotate = [&](const auto &it, short posits) {
+                    if (posits >= 0)
+                        return rotate_pos(it, static_cast<u_short>(posits), marbles.begin(), marbles.end());
+                    else
+                        return rotate_neg(it, static_cast<u_short>(-posits), marbles.begin(), marbles.end());
+                };
+
                 auto current_marble = marbles.begin();
                 for (size_t i = 1; i <= last; ++i)
                     if (i % 23 > 0) {
-                        rotate(current_marble, -2, marbles.begin(), marbles.end());
+                        current_marble = rotate(current_marble, -2);
                         marbles.insert(current_marble, i);
                     } else {
-                        rotate(current_marble, 6, marbles.begin(), marbles.end());
+                        current_marble = rotate(current_marble, 6);
                         if (auto score = scores[(i - 1) % players] += i + *current_marble; score > max_score)
                             max_score = score;
                         marbles.erase(current_marble);

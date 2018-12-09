@@ -34,7 +34,7 @@ namespace _2018 {
                 in >> players;
 
                 string tmp;
-                for(size_t _ = 0; _ < 5; ++_) in >> tmp;
+                for (size_t _ = 0; _ < 5; ++_) in >> tmp;
 
                 size_t last_marble_value;
                 in >> last_marble_value;
@@ -44,7 +44,7 @@ namespace _2018 {
             }
 
         }
-        
+
     }
 
 }

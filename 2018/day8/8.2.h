@@ -49,10 +49,9 @@ namespace _2018 {
 
                 auto first = numbers.begin() + current_index;
                 auto last = first + n_of_metadata;
-                vector<size_t> metadata{first, last};
                 current_index += n_of_metadata;
 
-                return {move(children), move(metadata)};
+                return {move(children), move(vector<size_t>{first, last})};
             };
 
             elem_t get_root(const vector<size_t> &numbers) {
@@ -61,12 +60,15 @@ namespace _2018 {
             }
 
             size_t value(const Node &node) {
+
                 if (node.children.empty())
                     return accumulate(node.metadata.begin(), node.metadata.end(), 0ul);
+
                 size_t result = 0;
                 for (const auto &child_reference : node.metadata)
                     if (auto index = child_reference - 1; 0 <= index and index < node.children.size())
                         result += value(node.children.at(index));
+
                 return result;
             }
 

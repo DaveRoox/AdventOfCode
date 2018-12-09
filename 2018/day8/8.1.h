@@ -37,10 +37,9 @@ namespace _2018 {
 
                 auto first = numbers.begin() + current_index;
                 auto last = first + n_of_metadata;
-                result_t result = accumulate(first, last, metadata_sum);
                 current_index += n_of_metadata;
 
-                return result;
+                return accumulate(first, last, metadata_sum);;
             };
 
             result_t get_metadata_of_root(const vector<size_t> &numbers) {

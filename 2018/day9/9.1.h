@@ -56,7 +56,7 @@ namespace _2018 {
 
                 list<size_t> marbles{0};
                 auto current_marble = marbles.begin();
-                for (size_t i = 1; i <= last; ++i) {
+                for (size_t i = 1; i <= last; ++i)
                     if (i % 23 > 0) {
                         rotate(current_marble, -2, marbles.begin(), marbles.end());
                         marbles.insert(current_marble, i);
@@ -66,7 +66,6 @@ namespace _2018 {
                             max_score = score;
                         marbles.erase(current_marble);
                     }
-                }
 
                 return max_score;
             }

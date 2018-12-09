@@ -1,7 +1,3 @@
-//
-// Created by Davide Russo on 01/12/2018.
-//
-
 #ifndef ADVENTOFCODE_2017_1_2_H
 #define ADVENTOFCODE_2017_1_2_H
 

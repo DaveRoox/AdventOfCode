@@ -1,7 +1,3 @@
-//
-// Created by Davide Russo on 01/12/2018.
-//
-
 #ifndef ADVENTOFCODE_STATE_H
 #define ADVENTOFCODE_STATE_H
 

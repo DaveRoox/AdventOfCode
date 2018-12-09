@@ -1,11 +1,5 @@
-//
-// Created by Davide Russo on 01/12/2018.
-//
-
 #include "Tape.h"
 #include "State.h"
-
-#include <numeric>
 
 using std::runtime_error;
 using std::accumulate;

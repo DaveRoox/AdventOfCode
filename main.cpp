@@ -1,6 +1,8 @@
 #include "2017.h"
 #include "2018.h"
 
+#include <iostream>
+
 constexpr const unsigned short line_width = 75;
 
 using std::cout;

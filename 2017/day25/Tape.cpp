@@ -1,3 +1,4 @@
+#include <numeric>
 #include "Tape.h"
 #include "State.h"
 

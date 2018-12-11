@@ -61,4 +61,6 @@ int main() {
     execute({2018, 9, 2}, _2018::day9::part2::main);
     execute({2018, 10, 1}, _2018::day10::part1::main);
     execute({2018, 10, 2}, _2018::day10::part2::main);
+    execute({2018, 11, 1}, _2018::day11::part1::main);
+    execute({2018, 11, 2}, _2018::day11::part2::main);
 }

@@ -32,13 +32,13 @@ namespace _2018 {
                     stars.emplace_back(part1::parse_star(s));
                 in.close();
 
-                auto[current_x_range, current_y_range] = perform_move_and_get_ranges(stars);
+                auto[current_x_range, current_y_range] = part1::perform_move_and_get_ranges(stars);
                 decltype(current_x_range) prev_x_range, prev_y_range;
                 size_t result = 0;
                 do {
                     ++result;
                     prev_x_range = current_x_range, prev_y_range = current_y_range;
-                    auto new_ranges{move(perform_move_and_get_ranges(stars))};
+                    auto new_ranges{move(part1::perform_move_and_get_ranges(stars))};
                     current_x_range = new_ranges.first, current_y_range = new_ranges.second;
                 } while (current_x_range <= prev_x_range and current_y_range <= prev_y_range);
 

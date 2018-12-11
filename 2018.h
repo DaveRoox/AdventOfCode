@@ -25,5 +25,7 @@
 #include "2018/day09/9.2.h"
 #include "2018/day10/10.1.h"
 #include "2018/day10/10.2.h"
+#include "2018/day11/11.1.h"
+#include "2018/day11/11.2.h"
 
 #endif //ADVENTOFCODE_2018_H

@@ -81,7 +81,7 @@ namespace _2018 {
                 ss << '\n';
                 for (size_t i = 0; i < height; ++i, ss << '\n')
                     for (size_t j = 0; j < width; ++j)
-                        ss << (grid.at(i).at(j) ? '*' : ' ');
+                        ss << (grid.at(i).at(j) ? '0' : ' ');
 
                 return ss.str();
             }

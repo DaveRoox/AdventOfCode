@@ -33,23 +33,12 @@ namespace _2018 {
                 in >> serial_number;
                 in.close();
 
-                vector<vector<long>> powers;
-                for (size_t i = 0; i < grid_size; ++i) {
-                    powers.emplace_back(move(vector{part1::power_level(i + 1, 1, serial_number)}));
-                    for (size_t j = 1; j < grid_size; ++j)
-                        powers[i].emplace_back(part1::power_level(i + 1, j + 1, serial_number) +
-                                               powers.at(i).back()); // Summing up in rows
-                }
-
-                // Summing up in columns
-                for (size_t i = 1; i < grid_size; ++i)
-                    for (size_t j = 0; j < grid_size; ++j)
-                        powers[i][j] += powers[i - 1][j];
+                vector<vector<long>> powers{move(part1::generate_cumulative_grid(serial_number))};
 
                 auto[row, col, max] = part1::find_max_for_size(powers, 3);
                 long max_size = 3;
                 for (size_t size = 4; size <= grid_size; ++size) {
-                    // pow(i, j) = m[i + size - 1, j + size - 1] - m[i - 1, j] + m[i, j - 1] + m[i - 1, j - 1]
+                    // pow(i, j) = m[i + size - 1, j + size - 1] - m[i - 1, j + size - 1] - m[i + size - 1, j - 1] + m[i - 1, j - 1]
                     auto[curr_row, curr_col, curr_max] = part1::find_max_for_size(powers, size);
                     if (curr_max > max)
                         max = curr_max, row = curr_row, col = curr_col, max_size = size;

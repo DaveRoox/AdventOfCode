@@ -38,17 +38,13 @@ def walking_distance(target_point, movements):
     x, y, m, steps = 0, 0, 0, 0
     target_x, target_y = target_point[0], target_point[1]
     while x != target_x or y != target_y:
-        new_x, new_y = movements[m]
-        if new_x != x:
-            dy = 0
-            dx = 1 if new_x > x else -1
-        else:  # new_y != y
-            dx = 0
-            dy = 1 if new_y > y else -1
-        while (x != target_x or y != target_y) and (x != new_x or y != new_y):
-            x += dx
-            y += dy
-            steps += 1
+        next_x, next_y = movements[m]
+        if y == target_y and (x < target_x < next_x or next_x < target_x < x):  # stop on target_x
+            next_x = target_x
+        elif x == target_x and (y < target_y < next_y or next_y < target_y < y):  # stop on target_y
+            next_y = target_y
+        steps += abs(next_x - x) + abs(next_y - y)
+        x, y = next_x, next_y
         m += 1
     return steps
 

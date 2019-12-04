@@ -7,7 +7,7 @@ def is_valid_pwd(n, f):
             return False
         if curr == last:
             adj[curr] += 1
-        pre_last, last, n = last, curr, n // 10
+        last, n = curr, n // 10
     return len(list(filter(f, adj))) > 0
 
 

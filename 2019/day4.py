@@ -15,5 +15,5 @@ with open('./day4.txt') as f:
     range_min, range_max = map(int, f.readline().split('-'))
     range_min = max(range_min, 100000)
     range_max = min(range_max, 999999)
-    print(len(list(filter(lambda num: is_valid_pwd(num, f=lambda v: v > 0), range(range_min, range_max + 1)))))
-    print(len(list(filter(lambda num: is_valid_pwd(num, f=lambda v: v == 1), range(range_min, range_max + 1)))))
+    print(len(list(filter(lambda num: is_valid_pwd(num, lambda v: v > 0), range(range_min, range_max + 1)))))  # part 1
+    print(len(list(filter(lambda num: is_valid_pwd(num, lambda v: v == 1), range(range_min, range_max + 1)))))  # part 2

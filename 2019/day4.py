@@ -8,7 +8,7 @@ def is_valid_pwd(n, f):
         if curr == last:
             adj[curr] += 1
         last, n = curr, n // 10
-    return len(list(filter(f, adj))) > 0
+    return any(map(f, adj))
 
 
 with open('./day4.txt') as f:

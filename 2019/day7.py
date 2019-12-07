@@ -33,7 +33,7 @@ def run(program, queue_in, queue_out):
             p += 4
 
 
-def drive(program, permutation):  # starts 5 independent threads synchronized on a blocking queue
+def drive(program, permutation):  # starts 5 independent threads where pairs are synchronized on a blocking queue
     n = len(permutation)
     queues = [queue.Queue() for _ in range(n)]
     for q, p in zip(queues, permutation):
@@ -41,7 +41,7 @@ def drive(program, permutation):  # starts 5 independent threads synchronized on
     queues[0].put(0)
     amplifiers = []
     for a in range(n):
-        amplifiers.append(Thread(target=run, args=(program[:], queues[a], queues[(a + 1) % 5])))
+        amplifiers.append(Thread(target=run, args=(program[:], queues[a], queues[(a + 1) % n])))
         amplifiers[-1].start()
     for t in amplifiers:  # waiting for them all to finish
         t.join()

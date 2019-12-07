@@ -4,7 +4,7 @@ from threading import Thread
 
 
 def run(program, queue_in, queue_out):
-    p, i = 0, 0
+    p = 0
     while p < len(program):
         op_code = program[p] % 100
         if op_code == 99:  # exit
@@ -13,9 +13,8 @@ def run(program, queue_in, queue_out):
         if op_code == 3:  # input
             program[program[p + 1]] = queue_in.get(block=True)
             p += 2
-            i += 1  # next input, if any
         elif op_code == 4:  # output
-            queue_out.put(first_operand, block=True)
+            queue_out.put(first_operand)
             p += 2
         else:
             second_operand = program[program[p + 2]] if (program[p] % 10000) // 1000 == 0 else program[p + 2]
@@ -35,12 +34,13 @@ def run(program, queue_in, queue_out):
 
 
 def drive(program, permutation):  # starts 5 independent threads synchronized on a blocking queue
-    queues = [queue.Queue() for _ in range(5)]
-    for i, q in enumerate(queues):
-        q.put(permutation[i])
+    n = len(permutation)
+    queues = [queue.Queue() for _ in range(n)]
+    for q, p in zip(queues, permutation):
+        q.put(p)
     queues[0].put(0)
     amplifiers = []
-    for a in range(5):
+    for a in range(n):
         amplifiers.append(Thread(target=run, args=(program[:], queues[a], queues[(a + 1) % 5])))
         amplifiers[-1].start()
     for t in amplifiers:  # waiting for them all to finish

@@ -14,35 +14,33 @@ def run(program, inputs):
         if op_code == 99:  # exit
             return
         first_index = index(program, p, 1, rel_base)
-        first_operand = program[first_index]
         if op_code == 3:  # input
             program[first_index] = inputs[i]
             p += 2
             i += 1  # next input, if any
         elif op_code == 4:  # output
-            print(first_operand)
+            print(program[first_index])
             p += 2
         elif op_code == 9:  # change relative base
-            rel_base += first_operand
+            rel_base += program[first_index]
             p += 2
-        else:
+        else: # two-parameter opcodes
             second_index = index(program, p, 2, rel_base)
-            second_operand = program[second_index]
-            if op_code in (1, 2, 7, 8):
+            if op_code == 5:  # jump-if-true
+                p = program[second_index] if program[first_index] != 0 else p + 3
+            elif op_code == 6:  # jump-if-false
+                p = program[second_index] if program[first_index] == 0 else p + 3
+            else: # three-parameter opcodes
                 third_index = index(program, p, 3, rel_base)
                 if op_code == 1:  # add
-                    program[third_index] = first_operand + second_operand
+                    program[third_index] = program[first_index] + program[second_index]
                 elif op_code == 2:  # multiply
-                    program[third_index] = first_operand * second_operand
+                    program[third_index] = program[first_index] * program[second_index]
                 elif op_code == 7:  # less-than
-                    program[third_index] = 1 if first_operand < second_operand else 0
+                    program[third_index] = 1 if program[first_index] < program[second_index] else 0
                 elif op_code == 8:  # equals
-                    program[third_index] = 1 if first_operand == second_operand else 0
+                    program[third_index] = 1 if program[first_index] == program[second_index] else 0
                 p += 4
-            elif op_code == 5:  # jump-if-true
-                p = second_operand if first_operand != 0 else p + 3
-            elif op_code == 6:  # jump-if-false
-                p = second_operand if first_operand == 0 else p + 3
 
 
 with open('./day9.txt') as f:

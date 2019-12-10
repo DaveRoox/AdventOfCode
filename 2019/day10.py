@@ -15,8 +15,8 @@ def alpha(p1, p2):  # clockwise angle in radians between p1 and p2. y grows from
     return (2.5 * math.pi - math.atan2(p1[1] - p2[1], p2[0] - p1[0])) % (2 * math.pi)
 
 
-def visible_asteroids(x, y, asteroids):
-    return len(set(map(lambda a: alpha((x, y), a), asteroids)))
+def visible_asteroids(p, asteroids):
+    return len(set(map(lambda a: alpha(p, a), asteroids)))
 
 
 def append(accumulator, p, asteroid):
@@ -48,6 +48,6 @@ def polverize(p, asteroids, n):
 
 with open('./day10.txt') as f:
     asteroids = get_asteroids([line.replace('\n', '') for line in f.readlines()])
-    p, count = max(map(lambda a: (a, visible_asteroids(a[0], a[1], asteroids)), asteroids), key=lambda t: t[1])
+    p, count = max(map(lambda a: (a, visible_asteroids(a, asteroids)), asteroids), key=lambda t: t[1])
     print(count)  # part 1
     print(polverize(p, asteroids, n=200))  # part 2

@@ -37,7 +37,7 @@ def polverize(p, asteroids, n):
     while n > 0:
         i = (i + 1) % len(angles)
         l, index = angles_map[angles[i]]
-        if index < len(l):  # "consuming" the nearest asteroid from the first non-empty list on the successive angle
+        if index < len(l):  # "consuming" the nearest asteroid from the first successive angle that has a non-empty list
             angles_map[angles[i]][1] = index + 1  # index of "polverized" asteroids in that list
             n -= 1
 

@@ -1,17 +1,30 @@
-def generate_code(row, column):
-    limit = max(row, column)
-    r, code = 1, 20151125
-    codes = []
-    while r <= limit:
-        new_code_row = [code]
-        for c in range(r):
-            code = (code * 252533) % 33554393
-            new_code_row.append(code)
-        r += 1
-        codes.append(new_code_row)
-        print('Riga 1:', codes)
-    return codes[row - 1][column - 1]
+def f(i, j, sol):
+    if i not in sol:
+        sol[i] = {}
+    if j not in sol[i]:
+        if i != 0:
+            sol[i][j] = j + i + f(i - 1, j, sol)
+        elif j != 0:
+            sol[i][j] = j + 1 + f(i, j - 1, sol)
+        else:
+            sol[i][j] = 1
+    return sol[i][j]
 
 
-#print(generate_code(row=2981, column=3075))
-print(generate_code(row=2, column=3))
+def generate_code(n):
+    code = 20151125
+    while n > 1:
+        code = (code * 252533) % 33554393
+        n -= 1
+    return code
+
+
+row, col = 2981, 3075  # 1-based row e col target
+row -= 1  # 0-based row
+col -= 1  # 0-based col
+solutions = {}
+for c in range(col):  # computing bottom-up solutions
+    f(0, c, solutions)
+for r in range(row):
+    f(r, col, solutions)
+print(generate_code(n=f(row, col, solutions)))

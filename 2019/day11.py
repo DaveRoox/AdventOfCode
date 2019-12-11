@@ -28,7 +28,7 @@ class State:
         self.minr, self.maxr = min(self.minr, new_pos[0]), max(self.maxr, new_pos[0])
         self.minc, self.maxc = min(self.minc, new_pos[1]), max(self.maxc, new_pos[1])
 
-    def grid(self):
+    def draw(self):
         grid = [[0 for _ in range(state.maxc - state.minc + 1)] for _ in range(state.maxr - state.minr + 1)]
         for (r, c) in state.visited_positions:
             grid[r - state.minr][c - state.minc] = state.position_colors[(r, c)]
@@ -97,4 +97,4 @@ with open('./day11.txt') as f:
     print(len(state.position_colors))  # part 1
     state = State(initial_color=1)
     run(original_program[:], state.color, state.change)
-    print(state.grid())  # part 2
+    print(state.draw())  # part 2

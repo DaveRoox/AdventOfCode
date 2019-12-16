@@ -43,7 +43,7 @@ def run(program, inputs):
                 p += 4
 
 
-with open('./day9.txt') as f:
+with open('day09.txt') as f:
     original_program = list(map(int, f.readline().split(',')))
     run(original_program[:], inputs=[1])  # part 1
     run(original_program[:], inputs=[2])  # part 2

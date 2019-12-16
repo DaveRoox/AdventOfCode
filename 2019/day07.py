@@ -1,16 +1,20 @@
-def run(program, inputs):
-    p, i = 0, 0
+import itertools
+import queue
+from threading import Thread
+
+
+def run(program, queue_in, queue_out):
+    p = 0
     while p < len(program):
         op_code = program[p] % 100
         if op_code == 99:  # exit
             return
         first_operand = program[program[p + 1]] if (program[p] % 1000) // 100 == 0 else program[p + 1]
         if op_code == 3:  # input
-            program[program[p + 1]] = inputs[i]
+            program[program[p + 1]] = queue_in.get(block=True)
             p += 2
-            i += 1  # next input, if any
         elif op_code == 4:  # output
-            print(first_operand)
+            queue_out.put(first_operand)
             p += 2
         else:
             second_operand = program[program[p + 2]] if (program[p] % 10000) // 1000 == 0 else program[p + 2]
@@ -29,7 +33,22 @@ def run(program, inputs):
             p += 4
 
 
-with open('./day5.txt') as f:
-    original_program = list(map(int, f.readline().split(',')))
-    run(original_program[:], inputs=[1])  # part 1
-    run(original_program, inputs=[5])  # part 2
+def drive(program, permutation):  # starts 5 independent threads where pairs are synchronized on a blocking queue
+    n = len(permutation)
+    queues = [queue.Queue() for _ in range(n)]
+    for q, p in zip(queues, permutation):
+        q.put(p)
+    queues[0].put(0)
+    amplifiers = []
+    for a in range(n):
+        amplifiers.append(Thread(target=run, args=(program[:], queues[a], queues[(a + 1) % n])))
+        amplifiers[-1].start()
+    for t in amplifiers:  # waiting for them all to finish
+        t.join()
+    return queues[0].get()
+
+
+with open('day07.txt') as f:
+    program = list(map(int, f.readline().split(',')))
+    print(max(drive(program, permutation) for permutation in itertools.permutations(range(5))))  # part 1
+    print(max(drive(program, permutation) for permutation in itertools.permutations(range(5, 10))))  # part 2

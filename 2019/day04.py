@@ -11,7 +11,7 @@ def is_valid_pwd(n, f):
     return any(map(f, adj))
 
 
-with open('./day4.txt') as f:
+with open('day04.txt') as f:
     range_min, range_max = map(int, f.readline().split('-'))
     range_min = max(range_min, 100000)
     range_max = min(range_max, 999999)

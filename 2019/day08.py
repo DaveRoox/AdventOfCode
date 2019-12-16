@@ -14,7 +14,7 @@ def decode_image(layers, H, W):
     return image
 
 
-with open('./day8.txt') as f:
+with open('day08.txt') as f:
     W, H = 25, 6
     pixels = f.readline()
     layer_size = W * H

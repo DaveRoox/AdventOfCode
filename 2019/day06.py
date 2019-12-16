@@ -21,7 +21,7 @@ def lca_distance(node1, node2, root, parents):  # lowest common ancestor
     return i1 + i2
 
 
-with open('./day6.txt') as f:
+with open('day06.txt') as f:
     node_children, child_parent = {}, {}
     for line in f.readlines():
         p, c = line.replace('\n', '').split(')')

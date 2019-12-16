@@ -18,7 +18,7 @@ def find_params(p):
                 return 100 * noun + verb
 
 
-with open('./day2.txt') as f:
+with open('day02.txt') as f:
     original_program = list(map(int, f.readline().split(',')))
     print(run(original_program[:], first_op=12, second_op=2))  # part 1
     print(find_params(original_program))  # part 2

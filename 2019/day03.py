@@ -49,7 +49,7 @@ def walking_distance(target_point, movements):
     return steps
 
 
-with open('./day3.txt') as f:
+with open('day03.txt') as f:
     w1 = read_path(f)
     w2 = read_path(f)
     cross_points = find_cross_points(w1, w2)

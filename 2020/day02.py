@@ -17,6 +17,6 @@ def part2(lines):
 
 
 with open("day02.txt") as f:
-    v = f.readlines()
+    v = [line.replace('\n', '') for line in f]
     part1(v)
     part2(v)

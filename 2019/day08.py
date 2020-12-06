@@ -1,24 +1,20 @@
-def find_digits(d, l):
-    return sum(1 if c == d else 0 for c in l)
+def part1(line, width, height):
+    layer_size = width * height
+    layer = min(map(lambda i: line[i:i + layer_size], range(0, len(line), layer_size)), key=lambda lr: lr.count('0'))
+    print(layer.count('1') * layer.count('2'))
 
 
-def decode_image(layers, H, W):
-    image = []
-    for h in range(H):
-        for w in range(W):
-            li = 0
-            while li < len(layers) and layers[li][w + h * W] == '2':
-                li += 1
-            image.append('*' if layers[li][w + h * W] == '1' else ' ')
-        image.append('\n')
-    return image
+def part2(line, width, height):
+    def get_color(pixel_index):
+        while pixel_index < len(line) and line[pixel_index] == '2':
+            pixel_index += layer_size
+        return line[pixel_index] if pixel_index < len(line) else '2'
+
+    layer_size = width * height
+    print('\n'.join(''.join(' *'[get_color(width * i + j) == '1'] for j in range(width)) for i in range(height)))
 
 
-with open('day08.txt') as f:
-    W, H = 25, 6
-    pixels = f.readline()
-    layer_size = W * H
-    layers = [pixels[i * layer_size:(i + 1) * layer_size] for i in range(len(pixels) // layer_size)]
-    layer = layers[min(map(lambda p: (p[0], find_digits('0', p[1])), enumerate(layers)), key=lambda p: p[1])[0]]
-    print(find_digits('1', layer) * find_digits('2', layer))  # part 1
-    print(''.join(decode_image(layers, H, W)))  # part 2
+with open("day08.txt") as f:
+    l = f.readline()
+    part1(l, width=25, height=6)
+    part2(l, width=25, height=6)

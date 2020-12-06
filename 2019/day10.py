@@ -1,14 +1,13 @@
 import math
-from functools import reduce
 
 
 def get_asteroids(grid):
-    result = []
-    for y in range(len(grid)):
-        for x in range(len(grid[0])):
-            if grid[y][x] == '#':
-                result.append((x, y))
-    return result
+    positions = []
+    for i in range(len(grid)):
+        for j in range(len(grid[i])):
+            if grid[i][j] == '#':
+                positions.append((j, i))
+    return positions
 
 
 def alpha(p1, p2):  # clockwise angle in radians between p1 and p2. y grows from top to bottom.
@@ -19,35 +18,42 @@ def visible_asteroids(p, asteroids):
     return len(set(map(lambda a: alpha(p, a), asteroids)))
 
 
-def append(accumulator, p, asteroid):
-    angle = alpha(p, asteroid)
-    if angle not in accumulator:
-        accumulator[angle] = [[], 0]
-    accumulator[angle][0].append(asteroid)
-    return accumulator
+def part1(grid):
+    asteroids = get_asteroids(grid)
+    print(max(map(lambda a: visible_asteroids(a, asteroids), asteroids)))
 
 
-def polverize(p, asteroids, n):
-    # for each angle, it has the list of points sorted by distance from p
-    angles_map = reduce(lambda acc, asteroid: append(acc, p, asteroid), asteroids, {})
-    for angle in angles_map:
-        angles_map[angle][0].sort(key=lambda a: abs(p[0] - a[0]) + abs(p[1] - a[1]))  # sorting by ascending distance
+def part2(grid):
+    def group_asteroids_by_angle_sorted_by_distance_from(p, asteroids):
+        m = {}
+        for a in asteroids:
+            if a != p:
+                angle = alpha(p, a)
+                if angle not in m:
+                    m[angle] = [[], 0]
+                m[angle][0].append(a)
+        for angle in m:
+            m[angle][0].sort(key=lambda a: abs(a[0] - p[0]) + abs(a[1] - p[1]))
+        return m
 
-    i, angles = -1, sorted(angles_map.keys())
-    while n > 0:
-        i = (i + 1) % len(angles)
-        l, polv = angles_map[angles[i]]
-        if polv < len(l):  # "consuming" the nearest asteroid from the first successive angle that has a non-empty list
-            angles_map[angles[i]][1] = polv + 1  # number of "polverized" asteroids in that list
-            n -= 1
+    def get_kth_asteroid(m, k):
+        i, angles = 0, sorted(m.keys())
+        while k > 0:
+            angle = angles[i]
+            if m[angle][1] < len(m[angle][0]):
+                m[angle][1] += 1
+                k -= 1
+                if k == 0:
+                    return m[angle][0][m[angle][1] - 1]
+            i = (i + 1) % len(angles)
 
-    l, index = angles_map[angles[i]]
-    x, y = l[index - 1]
-    return 100 * x + y
+    asteroids = get_asteroids(grid)
+    p = max(asteroids, key=lambda a: visible_asteroids(a, asteroids))
+    _200th_asteroid = get_kth_asteroid(group_asteroids_by_angle_sorted_by_distance_from(p, asteroids), k=200)
+    print(100 * _200th_asteroid[0] + _200th_asteroid[1])
 
 
-with open('./day10.txt') as f:
-    asteroids = get_asteroids([line.replace('\n', '') for line in f.readlines()])
-    p, count = max(map(lambda a: (a, visible_asteroids(a, asteroids)), asteroids), key=lambda t: t[1])
-    print(count)  # part 1
-    print(polverize(p, asteroids, n=200))  # part 2
+with open("day10.txt") as f:
+    g = [list(line.replace('\n', '')) for line in f]
+    part1(g)
+    part2(g)

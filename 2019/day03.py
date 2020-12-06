@@ -1,57 +1,28 @@
-def read_path(f):
-    last_x, last_y = 0, 0
-    movements = [(last_x, last_y)]
-    for move in f.readline().split(','):
-        dir, ampl = move[0], int(move[1:])
-        if dir in ('U', 'D'):
-            last_y += ampl if dir == 'U' else -ampl
-        else:
-            last_x += ampl if dir == 'R' else -ampl
-        movements.append((last_x, last_y))
-    return movements
+def positions(wire_movement):
+    moves = {'R': (0, +1), 'L': (0, -1), 'U': (-1, 0), 'D': (+1, 0)}
+    d, x, y, steps = {}, 0, 0, 0
+    for movement in wire_movement:
+        p = moves[movement[0]]
+        for _ in range(int(movement[1:])):
+            steps += 1
+            y += p[0]
+            x += p[1]
+            if (x, y) not in d:
+                d[(x, y)] = steps
+    return d
 
 
-def find_cross_points(w1, w2):
-    cross_points = []
-    for (x1prev, y1prev), (x1, y1) in zip(w1, w1[1:]):
-        is_horizontal1 = y1 == y1prev
-        for (x2prev, y2prev), (x2, y2) in zip(w2, w2[1:]):
-            is_horizontal2 = y2 == y2prev
-            if is_horizontal1 == is_horizontal2:  # the wires are parallel
-                continue
-            if is_horizontal1:  # wire2 is vertical
-                y = y1
-                ymin, ymax = min(y2prev, y2), max(y2prev, y2)
-                x = x2
-                xmin, xmax = min(x1prev, x1), max(x1prev, x1)
-            else:  # wire1 is vertical
-                y = y2
-                ymin, ymax = min(y1prev, y1), max(y1prev, y1)
-                x = x1
-                xmin, xmax = min(x2prev, x2), max(x2prev, x2)
-            if xmin < x < xmax and ymin < y < ymax:
-                cross_points.append((x, y))
-    return cross_points
+def part1(wire1_moves, wire2_moves):
+    steps1, steps2 = positions(wire1_moves), positions(wire2_moves)
+    print(min(map(lambda p: abs(p[0]) + abs(p[1]), set(steps1.keys()).intersection(set(steps2.keys())))))
 
 
-def walking_distance(target_point, movements):
-    x, y, m, steps = 0, 0, 0, 0
-    target_x, target_y = target_point[0], target_point[1]
-    while x != target_x or y != target_y:
-        next_x, next_y = movements[m]
-        if y == target_y and (x < target_x < next_x or next_x < target_x < x):  # stop on target_x
-            next_x = target_x
-        elif x == target_x and (y < target_y < next_y or next_y < target_y < y):  # stop on target_y
-            next_y = target_y
-        steps += abs(next_x - x) + abs(next_y - y)
-        x, y = next_x, next_y
-        m += 1
-    return steps
+def part2(wire1_moves, wire2_moves):
+    steps1, steps2 = positions(wire1_moves), positions(wire2_moves)
+    print(min(map(lambda p: steps1[p] + steps2[p], set(steps1.keys()).intersection(set(steps2.keys())))))
 
 
-with open('day03.txt') as f:
-    w1 = read_path(f)
-    w2 = read_path(f)
-    cross_points = find_cross_points(w1, w2)
-    print(min(map(lambda p: abs(p[0]) + abs(p[1]), cross_points)))  # part 1
-    print(min(map(lambda p: walking_distance(p, w1) + walking_distance(p, w2), cross_points)))  # part 2
+with open("day03.txt") as f:
+    w1, w2 = list(map(lambda l: l.split(','), (line.replace('\n', '') for line in f)))
+    part1(w1, w2)
+    part2(w1, w2)

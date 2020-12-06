@@ -1,24 +1,32 @@
-def run(program, first_op, second_op):
-    program[1:3] = [first_op, second_op]
-    for i in range(0, len(program), 4):
-        op_code = program[i]
-        if op_code == 1:  # add
+def execute(program):
+    i = 0
+    while i < len(program):
+        if program[i] is 1:
             program[program[i + 3]] = program[program[i + 1]] + program[program[i + 2]]
-        elif op_code == 2:  # multiply
+            i += 4
+        elif program[i] is 2:
             program[program[i + 3]] = program[program[i + 1]] * program[program[i + 2]]
-        elif op_code == 99:  # exit
-            break
+            i += 4
+        elif program[i] is 99:
+            i = len(program)
     return program[0]
 
 
-def find_params(p):
+def part1(program):
+    program[1], program[2] = 12, 2
+    print(execute(program))
+
+
+def part2(program, expected_result):
     for noun in range(100):
         for verb in range(100):
-            if run(p[:], first_op=noun, second_op=verb) == 19690720:
-                return 100 * noun + verb
+            p = program[:]
+            p[1], p[2] = noun, verb
+            if execute(p) == expected_result:
+                print(100 * noun + verb)
 
 
-with open('day02.txt') as f:
-    original_program = list(map(int, f.readline().split(',')))
-    print(run(original_program[:], first_op=12, second_op=2))  # part 1
-    print(find_params(original_program))  # part 2
+with open("day02.txt") as f:
+    v = list(map(int, f.readline().split(',')))
+    part1(v[:])
+    part2(v, expected_result=19690720)

@@ -1,19 +1,25 @@
-def is_valid_pwd(n, f):
-    adj = [0 for _ in range(10)]
+def is_valid(n, func):
     last, n = n % 10, n // 10
+    hist = [0 for _ in range(10)]
+    hist[last] = 1
     while n > 0:
         curr = n % 10
-        if curr > last:
+        hist[curr] += 1
+        if last < curr:
             return False
-        if curr == last:
-            adj[curr] += 1
         last, n = curr, n // 10
-    return any(map(f, adj))
+    return any(map(func, hist))
 
 
-with open('day04.txt') as f:
+def part1(rmin, rmax):
+    print(sum(map(lambda n: is_valid(n, lambda v: v >= 2), range(max(rmin, 100000), min(rmax + 1, 999999)))))
+
+
+def part2(rmin, rmax):
+    print(sum(map(lambda n: is_valid(n, lambda v: v == 2), range(max(rmin, 100000), min(rmax + 1, 999999)))))
+
+
+with open("day04.txt") as f:
     range_min, range_max = map(int, f.readline().split('-'))
-    range_min = max(range_min, 100000)
-    range_max = min(range_max, 999999)
-    print(sum(map(lambda num: is_valid_pwd(num, lambda v: v > 0), range(range_min, range_max + 1))))  # part 1
-    print(sum(map(lambda num: is_valid_pwd(num, lambda v: v == 1), range(range_min, range_max + 1))))  # part 2
+    part1(range_min, range_max)
+    part2(range_min, range_max)

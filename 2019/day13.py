@@ -1,4 +1,4 @@
-def execute(program, inputs):
+def execute(program, inputs, outputs, istr_ptr=0, rel_i=0):
     def get(inp):
         return inp.pop(0)
 
@@ -57,13 +57,13 @@ def execute(program, inputs):
     def mode(v, par_n):
         m = (v // 10 ** (par_n - 1)) % 10
         if m == 0:
-            extend_memory_if_necessary(i + par_n)
-            return program[i + par_n]
+            extend_memory_if_necessary(istr_ptr + par_n)
+            return program[istr_ptr + par_n]
         elif m == 1:
-            return i + par_n
+            return istr_ptr + par_n
         elif m == 2:
-            extend_memory_if_necessary(i + par_n)
-            return rel_i + program[i + par_n]
+            extend_memory_if_necessary(istr_ptr + par_n)
+            return rel_i + program[istr_ptr + par_n]
 
     istr = {
         1: _1, 2: _2, 3: _3,
@@ -72,26 +72,49 @@ def execute(program, inputs):
         99: _99,
     }
 
-    outputs = []
-    i, rel_i, n = 0, 0, len(program) - 1
-    while i <= n:
-        op_code = program[i] % 100
-        par1_index = mode(program[i] // 100, 1)
-        par2_index = mode(program[i] // 100, 2)
-        par3_index = mode(program[i] // 100, 3)
-        i, rel_i = istr[op_code](par1_index, par2_index, par3_index, i, rel_i)
-    return outputs
+    n = len(program) - 1
+    while istr_ptr <= n:
+        op_code = program[istr_ptr] % 100
+        par1_index = mode(program[istr_ptr] // 100, 1)
+        par2_index = mode(program[istr_ptr] // 100, 2)
+        par3_index = mode(program[istr_ptr] // 100, 3)
+        if op_code != 3 or len(inputs) > 0:
+            istr_ptr, rel_i = istr[op_code](par1_index, par2_index, par3_index, istr_ptr, rel_i)
+        else:
+            break
+    return istr_ptr, rel_i  # to restore the execution later
 
 
 def part1(program):
-    print(execute(program, inputs=[1])[-1])
+    out = []
+    execute(program, [], out)
+    print(out[2::3].count(2))
 
 
 def part2(program):
-    print(execute(program, inputs=[2])[-1])
+    def find_symbol(s):
+        for i in range(len(out) - 3, -1, -3):
+            x, _, value = out[i], out[i + 1], out[i + 2]
+            if value == s:
+                return x
+
+    def get_score():
+        for i in range(len(out) - 3, -1, -3):
+            x, y, value = out[i], out[i + 1], out[i + 2]
+            if x == -1 and y == 0:
+                return value
+
+    program[0] = 2
+    istr_ptr, rel_i, inp, out = 0, 0, [0], []
+    while istr_ptr < len(program):
+        out = []
+        istr_ptr, rel_i = execute(program, inp, out)
+        user_x, ball_x = find_symbol(3), find_symbol(4)
+        inp.append(0 if user_x == ball_x else 1 if user_x < ball_x else -1)
+    print(get_score())
 
 
-with open("day09.txt") as f:
+with open("day13.txt") as f:
     v = list(map(int, f.readline().split(',')))
     part1(v[:])
     part2(v)

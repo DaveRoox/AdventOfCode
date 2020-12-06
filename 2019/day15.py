@@ -85,46 +85,82 @@ def execute(program, inputs, outputs, istr_ptr=0, rel_i=0):
     return istr_ptr, rel_i  # to restore the execution later
 
 
-def update_dir_and_pos(dir, pos, turning_direction):
-    dirs = {
-        '<': [(+1, 0, 'v'), (-1, 0, '^')],
-        '>': [(-1, 0, '^'), (+1, 0, 'v')],
-        '^': [(0, -1, '<'), (0, +1, '>')],
-        'v': [(0, +1, '>'), (0, -1, '<')],
-    }
-    dy, dx, dir = dirs[dir][turning_direction]  # turning left if 0, right if 1
-    return dir, (pos[0] + dy, pos[1] + dx)
+def get_map(program):
+    def visit(direction_code, pos):
+        nonlocal istr_ptr, rel_i, codes_map
+        inp.append(direction_code)
+        istr_ptr, rel_i = execute(program, inp, out, istr_ptr, rel_i)
+        codes_map[pos] = out.pop(0)
+        return codes_map[pos]
+
+    def opposite_direction(d):
+        return 1 if d == 2 else 2 if d == 1 else 3 if d == 4 else 4
+
+    def explore(curr_pos, dir_code):
+        nonlocal oxygen_pos
+
+        if curr_pos in codes_map:
+            return False
+
+        status_code = visit(dir_code, curr_pos)
+        if status_code == 0:
+            return False
+        elif status_code == 2:
+            oxygen_pos = curr_pos
+
+        for k, new_pos in enumerate([
+            (curr_pos[0], curr_pos[1] - 1),  # north
+            (curr_pos[0], curr_pos[1] + 1),  # south
+            (curr_pos[0] - 1, curr_pos[1]),  # west
+            (curr_pos[0] + 1, curr_pos[1]),  # east
+        ]):
+            if explore(new_pos, k + 1):
+                visit(opposite_direction(k + 1), curr_pos)  # stepping back
+        return True
+
+    istr_ptr, rel_i, inp, out = 0, 0, [], []  # Intcode computer-related variables
+    codes_map, oxygen_pos = {}, None
+    for k, v in enumerate([
+        (0, -1),  # north
+        (0, +1),  # south
+        (-1, 0),  # west
+        (+1, 0),  # east
+    ]):
+        if explore(v, k + 1):
+            visit(opposite_direction(k + 1), (0, 0))
+
+    return oxygen_pos, codes_map
 
 
-def get_painted_positions(program, default_color):
-    positions = {}
-    curr_dir, curr_pos = '^', (0, 0)
-    index, rel_index, out = 0, 0, []
-    while index < len(program):
-        index, rel_index = execute(
-            program, inputs=[positions.get(curr_pos, default_color)], outputs=out, istr_ptr=index, rel_i=rel_index)
-        positions[curr_pos] = out.pop(0)  # painting the current position with the output color
-        curr_dir, curr_pos = update_dir_and_pos(curr_dir, curr_pos, out.pop(0))
-    return positions
+def expand_from(src, codes_map, dest=None):
+    q, res, visited = [(src, 0)], 0, set()
+    while q:
+        src, c = q.pop(0)
+        if dest and src == dest:
+            return c
+        visited.add(src)
+        for new_src in [
+            (src[0], src[1] - 1),  # north
+            (src[0], src[1] + 1),  # south
+            (src[0] - 1, src[1]),  # west
+            (src[0] + 1, src[1]),  # east
+        ]:
+            if new_src not in visited and new_src in codes_map and codes_map[new_src] != 0:
+                q.append((new_src, c + 1))
+        res = max(res, c)
+
+    return res
 
 
 def part1(program):
-    print(len(get_painted_positions(program, default_color=0)))
+    print(expand_from(*get_map(program), dest=(0, 0)))
 
 
 def part2(program):
-    positions = get_painted_positions(program, default_color=1)
-    min_y, min_x = 0, 0
-    max_y, max_x = 0, 0
-    for pos in positions:
-        min_y, min_x = min(min_y, pos[0]), min(min_x, pos[1])
-        max_y, max_x = max(max_y, pos[0]), max(max_x, pos[1])
-    print('\n'.join(
-        ''.join(' *'[positions.get((y, x), 0)] for x in range(min_x, max_x + 1)) for y in range(min_y, max_y + 1)
-    ))
+    print(expand_from(*get_map(program)))
 
 
-with open("day11.txt") as f:
+with open("day15.txt") as f:
     v = list(map(int, f.readline().split(',')))
     part1(v[:])
     part2(v)

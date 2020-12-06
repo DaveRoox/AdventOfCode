@@ -8,6 +8,7 @@ def seat_id(boarding_pass):
             else:
                 high = mid
         return low
+
     return 8 * search(boarding_pass[:7], upper='B') + search(boarding_pass[7:], upper='R')
 
 

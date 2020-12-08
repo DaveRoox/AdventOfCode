@@ -15,6 +15,6 @@ def part2(line, width, height):
 
 
 with open("day08.txt") as f:
-    l = f.readline()
-    part1(l, width=25, height=6)
-    part2(l, width=25, height=6)
+    line = f.readline()
+    part1(line, width=25, height=6)
+    part2(line, width=25, height=6)

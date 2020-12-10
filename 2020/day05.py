@@ -21,7 +21,7 @@ def part2(boarding_passes):
     print(*list(filter(lambda sid: sid not in found_sids, range(min(found_sids), max(found_sids)))))
 
 
-with open("day05.txt") as f:
+with open("input/day05.txt") as f:
     b = [line.replace('\n', '') for line in f]
     part1(b)
     part2(b)

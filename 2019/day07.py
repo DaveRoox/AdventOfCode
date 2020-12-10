@@ -30,7 +30,7 @@ def part2(program):
     print(max(map(evaluate_signal, permutations(range(5, 10)))))
 
 
-with open("day07.txt") as f:
+with open("input/day07.txt") as f:
     v = list(map(int, f.readline().split(',')))
     part1(v)
     part2(v)

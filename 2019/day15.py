@@ -76,7 +76,7 @@ def part2(program):
     print(expand_from(*get_map(program)))
 
 
-with open("day15.txt") as f:
+with open("input/day15.txt") as f:
     v = list(map(int, f.readline().split(',')))
     part1(v[:])
     part2(v)

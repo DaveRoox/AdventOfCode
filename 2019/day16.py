@@ -24,7 +24,7 @@ def part2(signal):
     print(*signal[offset:offset + 8], sep='')
 
 
-with open("day16.txt") as f:
+with open("input/day16.txt") as f:
     m = list(map(int, f.readline()))
     part1(m)
     part2(m)

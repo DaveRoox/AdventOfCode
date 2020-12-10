@@ -44,7 +44,7 @@ def fold_multiline(v):
     return nv
 
 
-with open("day04.txt") as f:
+with open("input/day04.txt") as f:
     v = list(map(lambda p: dict(map(lambda a: a.split(':'), p.split())), fold_multiline([line.replace('\n', '') for line in f])))
     part1(v)
     part2(v)

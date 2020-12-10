@@ -36,7 +36,7 @@ def part2(program):
     print(execute(0, 0, set(), False))
 
 
-with open("day08.txt") as f:
+with open("input/day08.txt") as f:
     m = [line.replace('\n', '').split() for line in f]
     part1(m)
     part2(m)

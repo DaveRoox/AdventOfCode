@@ -16,7 +16,7 @@ def part2(lines):
     print(sum(map(is_valid, lines)))
 
 
-with open("day02.txt") as f:
+with open("input/day02.txt") as f:
     v = [line.replace('\n', '') for line in f]
     part1(v)
     part2(v)

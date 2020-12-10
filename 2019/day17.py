@@ -159,7 +159,7 @@ def part2(program, is_interactive):
     print(out[-1])
 
 
-with open("day17.txt") as f:
+with open("input/day17.txt") as f:
     v = list(map(int, f.readline().split(',')))
     part1(v[:])
     part2(v, is_interactive=True)

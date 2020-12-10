@@ -33,7 +33,7 @@ def part2(materials_map):
     pass
 
 
-with open("day14.txt") as f:
+with open("input/day14.txt") as f:
     m = {}
     for inps, out in (line.replace('\n', '').split(' => ') for line in f):
         out_qnt, out_name = out.split(' ')

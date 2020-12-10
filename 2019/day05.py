@@ -13,7 +13,7 @@ def part2(program):
     print(out[-1])
 
 
-with open("day05.txt") as f:
+with open("input/day05.txt") as f:
     v = list(map(int, f.readline().split(',')))
     part1(v[:])
     part2(v)

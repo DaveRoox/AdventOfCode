@@ -22,7 +22,7 @@ def part2(nums):
     print(find())
 
 
-with open("day01.txt") as f:
+with open("input/day01.txt") as f:
     v = list(map(int, f.readlines()))
     part1(v)
     part2(v)

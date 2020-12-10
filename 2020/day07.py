@@ -27,7 +27,7 @@ def part2(colors_map):
     print(required_bags_for('shiny gold') - 1)
 
 
-with open("day07.txt") as f:
+with open("input/day07.txt") as f:
     m = {}
     for outer, inners in (line.replace('.\n', '').split(' contain ') for line in f):
         if inners == 'no other bags':

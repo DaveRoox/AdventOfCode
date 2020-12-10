@@ -14,7 +14,7 @@ def part2(line, width, height):
     print('\n'.join(''.join(' *'[get_color(width * i + j) == '1'] for j in range(width)) for i in range(height)))
 
 
-with open("day08.txt") as f:
+with open("input/day08.txt") as f:
     line = f.readline()
     part1(line, width=25, height=6)
     part2(line, width=25, height=6)

@@ -22,7 +22,7 @@ def part2(lines):
     )
 
 
-with open("day03.txt") as f:
+with open("input/day03.txt") as f:
     v = [line.replace('\n', '') for line in f]
     part1(v)
     part2(v)

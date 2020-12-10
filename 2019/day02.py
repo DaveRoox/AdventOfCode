@@ -17,7 +17,7 @@ def part2(program, expected_result):
                 print(100 * noun + verb)
 
 
-with open("day02.txt") as f:
+with open("input/day02.txt") as f:
     v = list(map(int, f.readline().split(',')))
     part1(v[:])
     part2(v, expected_result=19690720)

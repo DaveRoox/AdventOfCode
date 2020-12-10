@@ -45,7 +45,7 @@ def part2(program):
     ))
 
 
-with open("day11.txt") as f:
+with open("input/day11.txt") as f:
     v = list(map(int, f.readline().split(',')))
     part1(v[:])
     part2(v)

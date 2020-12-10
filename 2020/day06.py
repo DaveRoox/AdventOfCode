@@ -14,7 +14,7 @@ def part2(groups):
     print(r)
 
 
-with open("day06.txt") as f:
+with open("input/day06.txt") as f:
     ans = [line.replace('\n', '') for line in f]
     groups, group = [], []
     for a in ans:

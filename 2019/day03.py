@@ -22,7 +22,7 @@ def part2(wire1_moves, wire2_moves):
     print(min(map(lambda p: steps1[p] + steps2[p], set(steps1.keys()).intersection(set(steps2.keys())))))
 
 
-with open("day03.txt") as f:
+with open("input/day03.txt") as f:
     w1, w2 = list(map(lambda l: l.split(','), (line.replace('\n', '') for line in f)))
     part1(w1, w2)
     part2(w1, w2)

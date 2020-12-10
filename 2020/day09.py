@@ -31,7 +31,7 @@ def part2(numbers):
             return
 
 
-with open("day09.txt") as f:
+with open("input/day09.txt") as f:
     nums = list(map(int, f.readlines()))
     part1(nums)
     part2(nums)

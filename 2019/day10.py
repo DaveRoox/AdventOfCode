@@ -53,7 +53,7 @@ def part2(grid):
     print(100 * _200th_asteroid[0] + _200th_asteroid[1])
 
 
-with open("day10.txt") as f:
+with open("input/day10.txt") as f:
     g = [list(line.replace('\n', '')) for line in f]
     part1(g)
     part2(g)

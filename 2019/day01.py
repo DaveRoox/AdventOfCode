@@ -13,7 +13,7 @@ def part2(modules):
     print(sum(map(needed_fuel, modules)))
 
 
-with open("day01.txt") as f:
+with open("input/day01.txt") as f:
     v = list(map(int, f.readlines()))
     part1(v)
     part2(v)

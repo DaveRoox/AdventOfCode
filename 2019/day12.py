@@ -51,7 +51,7 @@ def part2(pos):
     print(reduce(lambda acc, i: lcm(acc, cycles(pos, [[0, 0, 0] for _ in range(len(pos))], i)), range(3), 1))
 
 
-with open("day12.txt") as f:
+with open("input/day12.txt") as f:
     m = list(
         map(lambda l: list(map(lambda c: int(c.split('=')[1]), l.split(', '))), (l.replace('\n', '')[1:-1] for l in f))
     )

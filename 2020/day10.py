@@ -21,7 +21,7 @@ def part2(numbers):
     print(sol[0])
 
 
-with open("day10.txt") as f:
+with open("input/day10.txt") as f:
     v = list(map(int, f.readlines()))
     part1(v[:])
     part2(v)

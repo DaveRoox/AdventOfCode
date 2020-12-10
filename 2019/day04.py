@@ -19,7 +19,7 @@ def part2(rmin, rmax):
     print(sum(map(lambda n: is_valid(n, lambda v: v == 2), range(max(rmin, 100000), min(rmax + 1, 999999)))))
 
 
-with open("day04.txt") as f:
+with open("input/day04.txt") as f:
     range_min, range_max = map(int, f.readline().split('-'))
     part1(range_min, range_max)
     part2(range_min, range_max)

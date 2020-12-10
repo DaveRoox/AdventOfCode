@@ -30,7 +30,7 @@ def part2(program):
     print(get_score())
 
 
-with open("day13.txt") as f:
+with open("input/day13.txt") as f:
     v = list(map(int, f.readline().split(',')))
     part1(v[:])
     part2(v)

@@ -24,7 +24,7 @@ def part2(orbits):
     print(len(p1) + len(p2) - 2 * k)
 
 
-with open("day06.txt") as f:
+with open("input/day06.txt") as f:
     o = dict(map(lambda s: s.split(')')[::-1], (line.replace('\n', '') for line in f)))
     part1(o)
     part2(o)

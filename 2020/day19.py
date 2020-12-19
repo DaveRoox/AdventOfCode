@@ -23,27 +23,28 @@ def part1(rules, messages):
 
 
 def part2(rules, messages):
-    def is_n(s, n):
-        if n == '8':
-            for i in range(len(s) + 1):
-                if is_n(s[:i], '42') and (i == len(s) or is_n(s[i:], '8')):
-                    return True
-            return False
-        elif n == '11':
-            for i in range(len(s) + 1):
-                for j in range(i, len(s) + 1):
-                    if is_n(s[:i], '42') and (i == j or is_n(s[i:j], '11')) and is_n(s[j:], '31'):
-                        return True
-            return False
-        return s in sols[n]
+    def is_in_0(m):
+        if m in sols['0']:
+            return True
+        sub_m, upper = '', -1
+        u = 0
+        for i in range(len(m)):
+            sub_m += m[i]
+            if sub_m in sols['42']:
+                sub_m, upper = '', i
+                u += 1
+        sub_m, lower = '', len(m)
+        l = 0
+        for j in range(len(m) - 1, upper, -1):
+            sub_m = m[j] + sub_m
+            if sub_m in sols['31']:
+                sub_m, lower = '', j
+                l += 1
+        return u > l > 0 and upper == lower - 1
 
     sols = {}
-    resolve('0', rules, sols)  # to populate sols
-    print(sum(1
-              for message in messages
-              for i in range(1, len(message))
-              if is_n(message[:i], '8') and is_n(message[i:], '11'))
-          )
+    resolve('0', rules, sols)
+    print(sum(map(is_in_0, messages)))
 
 
 with open("input/day19.txt") as f:

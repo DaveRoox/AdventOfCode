@@ -1,16 +1,6 @@
 from functools import reduce
 
 
-def count_ingredient_occurrences(v):
-    occs = {}
-    for _, ingredients in v:
-        for ingredient in ingredients:
-            if ingredient not in occs:
-                occs[ingredient] = 0
-            occs[ingredient] += 1
-    return occs
-
-
 def possible_ingredients_by_allergen(v):
     ingrs_per_allergen = {}
     for allergens, ingredients in v:
@@ -23,7 +13,16 @@ def possible_ingredients_by_allergen(v):
 
 
 def part1(v):
-    occs = count_ingredient_occurrences(v)
+    def count_ingredient_occurrences():
+        occs = {}
+        for _, ingredients in v:
+            for ingredient in ingredients:
+                if ingredient not in occs:
+                    occs[ingredient] = 0
+                occs[ingredient] += 1
+        return occs
+
+    occs = count_ingredient_occurrences()
     possible_ingrs_by_allergen = possible_ingredients_by_allergen(v)
     all_possible_ingredients_with_allergens = reduce(
         lambda acc, ingrs: acc.union(set(ingrs)),

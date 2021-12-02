@@ -1,3 +1,4 @@
+// Package utils provides functions to read from file, parsing and string manipulation utilities.
 package utils
 
 import (
@@ -7,6 +8,8 @@ import (
 	"strings"
 )
 
+// ReadFileContentOrDie takes a filename as input and returns the content of the file as string.
+// If the file does not exist or cannot be read, the function prints the error on the standard output and calls os.Exit(1).
 func ReadFileContentOrDie(filename string) string {
 	data, err := ioutil.ReadFile(filename)
 	if err != nil {
@@ -15,17 +18,27 @@ func ReadFileContentOrDie(filename string) string {
 	return string(data)
 }
 
+// ReadFileLinesOrDie takes a filename as input and returns the content of the file as string split by newline.
+// If the file does not exist or cannot be read, the function prints the error on the standard output and calls os.Exit(1).
 func ReadFileLinesOrDie(filename string) []string {
 	return strings.Split(ReadFileContentOrDie(filename), "\n")
 }
 
-func StringSliceToInt64Slice(sl []string) (il []int64) {
+// StringSliceToIntSliceOrDie takes a slice of strings representing integer numbers as input and returns a slice of int with the corresponding int values.
+// If one of the integer cannot be parsed, the function prints the error on the standard output and calls os.Exit(1).
+func StringSliceToIntSliceOrDie(sl []string) (il []int) {
 	for _, s := range sl {
-		v, err := strconv.ParseInt(s, 10, 64)
-		if err != nil {
-			log.Fatal(err)
-		}
-		il = append(il, v)
+		il = append(il, ToIntOrDie(s))
 	}
 	return
+}
+
+// ToIntOrDie takes a string s as input representing an integer number and returns the corresponding int value.
+// If the integer cannot be parsed, the function prints the error on the standard output and calls os.Exit(1).
+func ToIntOrDie(s string) int {
+	n, err := strconv.ParseInt(s, 10, 64)
+	if err != nil {
+		log.Fatal(err)
+	}
+	return int(n)
 }

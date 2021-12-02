@@ -1,17 +1,9 @@
 def part1(nums):
-    c = 0
-    for x, y in zip(nums, nums[1:]):
-        if y > x:
-            c += 1
-    print(c)
+    print(sum(map(lambda t: int.__lt__(*t), zip(nums, nums[1:]))))
 
 
 def part2(nums):
-    c = 0
-    for x, y in zip(nums, nums[3:]):
-        if y > x:
-            c += 1
-    print(c)
+    print(sum(map(lambda t: int.__lt__(*t), zip(nums, nums[3:]))))
 
 
 with open("input/day01.txt") as f:

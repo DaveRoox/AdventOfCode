@@ -25,7 +25,7 @@ func Part2(nums []int) {
 }
 
 func main() {
-	nums := utils.StringSliceToIntSliceOrDie(utils.ReadFileLinesOrDie("./input/day01.txt"))
+	nums := utils.ToIntSliceOrDie(utils.ReadFileLinesOrDie("./input/day01.txt"))
 	Part1(nums)
 	Part2(nums)
 }

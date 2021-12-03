@@ -18,7 +18,8 @@ def part2(nums):
     def filter_down(arr, strategy):
         pos = 0
         while len(arr) > 1:
-            arr = list(filter(lambda n: n[pos] == str(strategy(arr, pos)), arr))
+            res = str(strategy(arr, pos))
+            arr = list(filter(lambda n: n[pos] == res, arr))
             pos += 1
         return int(arr[0], 2)
 

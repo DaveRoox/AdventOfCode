@@ -8,7 +8,7 @@ def has_horizontal_bingo(board, num, unmarked):
 
 def has_vertical_bingo(board, num, unmarked):
     return any(
-        is_bingo(num, col, unmarked) for col in ([board[i][j] for i in range(len(board))] for j in range(len(board[0]))))
+        is_bingo(num, col, unmarked) for col in ([board[i][j] for i in range(5)] for j in range(5)))
 
 
 def has_bingo(board, num, unmarked):

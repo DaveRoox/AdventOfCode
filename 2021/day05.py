@@ -14,12 +14,12 @@ def visited_points(segments, can_visit):
 
 def part1(segments):
     print(sum(overlaps > 1 for overlaps in visited_points(segments,
-                                                          lambda s: s[0][0] == s[1][0] or s[0][1] == s[1][1]).values()))
+                                                          can_visit=lambda s: s[0][0] == s[1][0] or s[0][1] == s[1][1]).values()))
 
 
 def part2(segments):
     print(sum(overlaps > 1 for overlaps in visited_points(segments,
-                                                          lambda _: True).values()))
+                                                          can_visit=lambda _: True).values()))
 
 
 with open("input/day05.txt") as f:

@@ -62,3 +62,13 @@ func Filter(sl []string, cond func(string) bool) (fsl []string) {
 	}
 	return
 }
+
+// Sign takes an integer n as input and returns 1 if n > 0, -1 if n < 0, 0 otherwise
+func Sign(n int) int {
+	if n > 0 {
+		return 1
+	} else if n < 0 {
+		return -1
+	}
+	return 0
+}

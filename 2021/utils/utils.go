@@ -72,3 +72,20 @@ func Sign(n int) int {
 	}
 	return 0
 }
+
+// Sum takes a slice of integers as input and returns the sum of its elements.
+func Sum(v []int) (c int) {
+	for _, n := range v {
+		c += n
+	}
+	return
+}
+
+// Copy takes a slice of integers as input and returns a newly allocated copy of it.
+func Copy(v []int) []int {
+	cp := make([]int, len(v))
+	for i := range v {
+		cp[i] = v[i]
+	}
+	return cp
+}

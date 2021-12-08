@@ -3,16 +3,11 @@ def fuel_to_align(v, to_position, f):
 
 
 def part1(v):
-    print(fuel_to_align(v,
-                        to_position=sorted(v)[len(v) // 2],
-                        f=lambda _: _))
+    print(fuel_to_align(v, to_position=sorted(v)[len(v) // 2], f=lambda _: _))
 
 
 def part2(v):
-    d = 0.5 + sum(v) / len(v)
-    print(fuel_to_align(v,
-                        to_position=min(enumerate(sorted(v)), key=lambda x: abs(x[1] - d + x[0] / len(v)))[1],
-                        f=lambda n: n * (n + 1) // 2))
+    print(fuel_to_align(v, to_position=int(sum(v) / len(v)), f=lambda n: n * (n + 1) // 2))
 
 
 with open("input/day07.txt") as f:

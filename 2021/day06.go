@@ -13,7 +13,7 @@ func shift(states []int, days int) int {
 			states[i] = states[i+1]
 		}
 		states[8] = _0s
-		states[6] += states[8]
+		states[6] += _0s
 	}
 	return utils.Sum(states)
 }

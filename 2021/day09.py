@@ -3,8 +3,8 @@ from functools import reduce
 
 def part1(g):
     def is_lowest_point(g, i, j):
-        return not any(0 <= i + di < len(g) and 0 <= j + dj < len(g[0]) and g[i][j] >= g[i + di][j + dj] for di, dj in
-                       [(-1, 0), (1, 0), (0, -1), (0, 1)])
+        return all(g[i][j] < g[i + di][j + dj] for di, dj in [(-1, 0), (1, 0), (0, -1), (0, 1)] if
+                   0 <= i + di < len(g) and 0 <= j + dj < len(g[0]))
 
     print(sum(1 + g[i][j] for i in range(len(g)) for j in range(len(g[0])) if is_lowest_point(g, i, j)))
 

@@ -22,7 +22,7 @@ def part2(g):
 
     visited = set()
     basins = [expand(g, i, j, visited) for i in range(len(g)) for j in range(len(g[0])) if (i, j) not in visited]
-    print(reduce(lambda acc, v: acc * v, sorted(list(basins), reverse=True)[:3], 1))
+    print(reduce(int.__mul__, sorted(basins)[-3:], 1))
 
 
 with open("input/day09.txt") as f:

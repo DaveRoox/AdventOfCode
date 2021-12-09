@@ -13,11 +13,12 @@ def part2(g):
     def expand(g, i, j, visited):
         if not (0 <= i < len(g)) or not (0 <= j < len(g[0])) or g[i][j] == 9 or (i, j) in visited:
             return 0
-
         visited.add((i, j))
         r = 1
-        for di, dj in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
-            r += expand(g, i + di, j + dj, visited)
+        r += expand(g, i - 1, j, visited)
+        r += expand(g, i + 1, j, visited)
+        r += expand(g, i, j - 1, visited)
+        r += expand(g, i, j + 1, visited)
         return r
 
     visited = set()

@@ -4,7 +4,7 @@ from functools import reduce
 def diagnose(line):
     stack, closing_map = [], {'{': '}', '(': ')', '<': '>', '[': ']'}
     for c in line:
-        if c in '{<[(':
+        if c in closing_map:
             stack.append(c)
         elif len(stack) == 0 or c != closing_map[stack[-1]]:
             return True, c  # True if corrupted

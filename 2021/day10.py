@@ -9,7 +9,7 @@ def diagnose(line):
         elif len(stack) == 0 or c != closing_map[stack[-1]]:
             return True, c  # True if corrupted
         else:
-            stack = stack[:-1]
+            stack.pop()
     return False, ''.join(map(closing_map.get, stack[::-1]))  # False if incomplete
 
 

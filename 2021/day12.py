@@ -1,29 +1,29 @@
-def dfs(curr, end, caves, bonus_condition, seen, has_two=False):
+def dfs(curr, end, caves, max, is_ok, seen={}, has_max=False):
     if curr == end:
         return 1
     r = 0
     for cave in caves[curr]:
+        n = seen.get(cave, 0)
         if cave.isupper():
-            r += dfs(cave, end, caves, bonus_condition, seen, has_two)
-        elif seen.get(cave, 0) == 0 or bonus_condition(seen[cave], has_two):
-            seen[cave] = seen.get(cave, 0) + 1
-            r += dfs(cave, end, caves, bonus_condition, seen, has_two or seen[cave] == 2)
+            r += dfs(cave, end, caves, max, is_ok, seen, has_max)
+        elif n < max and is_ok(not has_max or n != max - 1):
+            seen[cave] = n + 1
+            r += dfs(cave, end, caves, max, is_ok, seen, has_max or seen[cave] == max)
             seen[cave] -= 1
     return r
 
 
 def part1(graph):
-    print(dfs('start', 'end', graph, bonus_condition=lambda _, __: False, seen={}))
+    print(dfs('start', 'end', graph, max=1, is_ok=lambda _: True))
 
 
 def part2(graph):
-    print(dfs('start', 'end', graph, bonus_condition=lambda n, has_two: n == 1 and not has_two, seen={}))
+    print(dfs('start', 'end', graph, max=2, is_ok=lambda _: _))
 
 
 with open("input/day12.txt") as f:
-    g = list(map(lambda l: tuple(l.replace('\n', '').split('-')), f.readlines()))
     caves_adj = {}
-    for k, v in g:
+    for k, v in list(map(lambda l: tuple(l.replace('\n', '').split('-')), f.readlines())):
         if v != 'start':  # we don't want to visit 'start' multiple times, so we can avoid storing it as adjacent
             if k not in caves_adj:
                 caves_adj[k] = []

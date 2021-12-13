@@ -20,7 +20,7 @@ def part2(points, folds):
                 print('#' if (xx, yy) in points else ' ', end='')
             print()
 
-    print_points(reduce(lambda p, f: fold(p, f), folds, points))
+    print_points(reduce(fold, folds, points))
 
 
 with open("input/day13.txt") as f:

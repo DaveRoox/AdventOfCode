@@ -22,7 +22,7 @@ def part2(points, folds):
         min_y, max_y = min(points, key=lambda p: p[1])[1], max(points, key=lambda p: p[1])[1]
         for yy in range(min_y, 1 + max_y):
             for xx in range(min_x, 1 + max_x):
-                print('#' if (xx, yy) in points else '.', end='')
+                print('#' if (xx, yy) in points else ' ', end='')
             print()
 
     print_points(reduce(lambda p, f: fold(p, f), folds, points))

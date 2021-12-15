@@ -2,10 +2,10 @@ from queue import PriorityQueue
 
 
 def dijkstra(g):
-    d = {(i, j): float('inf') for i in range(len(g)) for j in range(len(g[0]))}
-    d[(0, 0)] = 0
+    d, curr_cell = {(i, j): float('inf') for i in range(len(g)) for j in range(len(g[0]))}, (0, 0)
+    d[curr_cell] = 0
     pq, visited = PriorityQueue(), set()
-    pq.put((0, (0, 0)))
+    pq.put((0, curr_cell))
 
     while not pq.empty():
         _, curr_cell = pq.get()
@@ -15,8 +15,7 @@ def dijkstra(g):
             ni, nj = i + di, j + dj
             new_cell = (ni, nj)
             if 0 <= ni < len(g) and 0 <= nj < len(g[0]) and new_cell not in visited:
-                old_cost = d[new_cell]
-                new_cost = d[curr_cell] + g[ni][nj]
+                old_cost, new_cost = d[new_cell], d[curr_cell] + g[ni][nj]
                 if new_cost < old_cost:
                     pq.put((new_cost, new_cell))
                     d[new_cell] = new_cost
@@ -29,18 +28,13 @@ def part1(grid):
 
 
 def part2(grid):
-    new_grid = [[0 for _ in range(5 * len(g[0]))] for _ in range(5 * len(g))]
-    for i in range(len(new_grid)):
-        for j in range(len(new_grid[0])):
-            if i < len(grid) and j < len(grid[0]):
-                new_grid[i][j] = grid[i][j]
-            elif i < len(grid):
-                new_grid[i][j] = new_grid[i][j - len(grid[0])] + 1
-            else:
-                new_grid[i][j] = new_grid[i - len(grid)][j] + 1
-            if new_grid[i][j] == 10:
-                new_grid[i][j] = 1
-    print(dijkstra(new_grid))
+    def new_value(i, j):
+        def modulo(x):
+            return x if x <= 9 else x - 9
+
+        return modulo(grid[i % len(grid)][j % len(grid[0])] + i // len(grid) + j // len(grid[0]))
+
+    print(dijkstra([[new_value(i, j) for j in range(5 * len(grid[0]))] for i in range(5 * len(grid))]))
 
 
 with open("input/day15.txt") as f:

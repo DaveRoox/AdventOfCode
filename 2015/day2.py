@@ -1,12 +1,12 @@
-from functools import reduce
+def part1(v):
+    print(sum(2 * sum((t[0] * t[1], t[1] * t[2], t[2] * t[0])) + min(t[0] * t[1], t[1] * t[2], t[2] * t[0]) for t in v))
 
-with open('./day22015.txt') as f:
-    wrapping_paper = 0
-    feet_of_ribbon = 0
-    for line in f:
-        dims = list(map(int, (x for x in line.split('x'))))
-        surf = [dims[0] * dims[1], dims[1] * dims[2], dims[2] * dims[0]]
-        wrapping_paper += 2 * sum(surf) + min(surf)
-        feet_of_ribbon += 2 * (sum(dims) - max(dims)) + reduce(lambda a, x: a * x, dims, 1)
-    print(wrapping_paper)
-    print(feet_of_ribbon)
+
+def part2(v):
+    print(sum(2 * (sum(t)-max(t)) + t[0]*t[1]*t[2] for t in v))
+
+
+with open("input/day2.txt") as f:
+    v = list(map(lambda l: tuple(map(int, l.replace('\n', '').split('x'))), f.readlines()))
+    part1(v)
+    part2(v)

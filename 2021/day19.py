@@ -15,11 +15,10 @@ def rows_match(r1, r2, vx, vy, vz, sx, sy, sz):
     return False
 
 
-def can_overlap(m1, m2, vx, vy, vz, sx, sy, sz):
-    return any(rows_match(r1, r2, vx, vy, vz, sx, sy, sz) for r1 in m1 for r2 in m2)
-
-
 def overlaps_with(ref_points, other_points):
+    def can_overlap(m1, m2, vx, vy, vz, sx, sy, sz):
+        return any(rows_match(r1, r2, vx, vy, vz, sx, sy, sz) for r1 in m1 for r2 in m2)
+
     ref_dist_matrix, other_dist_matrix = get_distance_matrix(ref_points), get_distance_matrix(other_points)
     for vx, vy, vz in [(0, 1, 2), (0, 2, 1), (1, 0, 2), (1, 2, 0), (2, 0, 1), (2, 1, 0)]:
         for sx in [-1, 1]:

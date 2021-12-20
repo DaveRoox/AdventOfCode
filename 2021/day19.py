@@ -49,7 +49,6 @@ def part2(scanners):
 
 
 with open("input/day19.txt") as f:
-    debug = True
     v = list(
         map(lambda l: list(map(lambda l: tuple(map(int, l.split(','))), l.split('\n')[1:])), f.read().split('\n\n')))
     ref_scanner_points, scanners = fold_points(v)

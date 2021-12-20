@@ -15,17 +15,22 @@ def rows_match(r1, r2, vx, vy, vz, sx, sy, sz):
     return False
 
 
+def configurations():
+    for vx, vy, vz in [(0, 1, 2), (0, 2, 1), (1, 0, 2), (1, 2, 0), (2, 0, 1), (2, 1, 0)]:
+        for sx in [-1, 1]:
+            for sy in [-1, 1]:
+                for sz in [-1, 1]:
+                    yield vx, vy, vz, sx, sy, sz
+
+
 def overlaps_with(ref_points, other_points):
     def can_overlap(m1, m2, vx, vy, vz, sx, sy, sz):
         return any(rows_match(r1, r2, vx, vy, vz, sx, sy, sz) for r1 in m1 for r2 in m2)
 
     ref_dist_matrix, other_dist_matrix = get_distance_matrix(ref_points), get_distance_matrix(other_points)
-    for vx, vy, vz in [(0, 1, 2), (0, 2, 1), (1, 0, 2), (1, 2, 0), (2, 0, 1), (2, 1, 0)]:
-        for sx in [-1, 1]:
-            for sy in [-1, 1]:
-                for sz in [-1, 1]:
-                    if can_overlap(ref_dist_matrix, other_dist_matrix, vx, vy, vz, sx, sy, sz):
-                        return True
+    for vx, vy, vz, sx, sy, sz in configurations():
+        if can_overlap(ref_dist_matrix, other_dist_matrix, vx, vy, vz, sx, sy, sz):
+            return True
     return False
 
 
@@ -38,17 +43,14 @@ def get_scanner_position(ref_points, other_points):
         return -1, -1
 
     ref_dist_matrix, other_dist_matrix = get_distance_matrix(ref_points), get_distance_matrix(other_points)
-    for vx, vy, vz in [(0, 1, 2), (0, 2, 1), (1, 0, 2), (1, 2, 0), (2, 0, 1), (2, 1, 0)]:
-        for sx in [-1, 1]:
-            for sy in [-1, 1]:
-                for sz in [-1, 1]:
-                    i, j = overlapping(ref_dist_matrix, other_dist_matrix, vx, vy, vz, sx, sy, sz)
-                    if i >= 0 and j >= 0:
-                        ref_point, other_point = ref_points[i], other_points[j]
-                        scanner_position = (ref_point[0] - sx * other_point[vx],
-                                            ref_point[1] - sy * other_point[vy],
-                                            ref_point[2] - sz * other_point[vz])
-                        return scanner_position, (vx, vy, vz), (sx, sy, sz)
+    for vx, vy, vz, sx, sy, sz in configurations():
+        i, j = overlapping(ref_dist_matrix, other_dist_matrix, vx, vy, vz, sx, sy, sz)
+        if i >= 0 and j >= 0:
+            ref_point, other_point = ref_points[i], other_points[j]
+            scanner_position = (ref_point[0] - sx * other_point[vx],
+                                ref_point[1] - sy * other_point[vy],
+                                ref_point[2] - sz * other_point[vz])
+            return scanner_position, (vx, vy, vz), (sx, sy, sz)
     return None, (0, 1, 2), (1, 1, 1)
 
 

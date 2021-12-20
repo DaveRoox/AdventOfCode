@@ -1,14 +1,12 @@
 import threading
 
-from aoc_utils import aoc_utils
 
-
-def rows_match(r1, r2, vx, vy, vz, sign_x, sign_y, sign_z):
+def rows_match(r1, r2, vx, vy, vz, sx, sy, sz):
     sr2, count = {}, 0
     for p in r1:
         sr2[p] = 1 + sr2.get(p, 0)
     for p in r2:
-        p = (sign_x * p[vx], sign_y * p[vy], sign_z * p[vz])
+        p = (sx * p[vx], sy * p[vy], sz * p[vz])
         if sr2.get(p, 0) > 0:
             count += 1
             if count >= min(12, len(r1)):

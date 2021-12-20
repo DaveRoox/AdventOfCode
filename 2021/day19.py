@@ -19,9 +19,8 @@ def can_overlap(m1, m2, vx, vy, vz, sx, sy, sz):
     return any(rows_match(r1, r2, vx, vy, vz, sx, sy, sz) for r1 in m1 for r2 in m2)
 
 
-def overlaps(ref_points, other_points):
-    ref_dist_matrix = get_distance_matrix(ref_points)
-    other_dist_matrix = get_distance_matrix(other_points)
+def overlaps_with(ref_points, other_points):
+    ref_dist_matrix, other_dist_matrix = get_distance_matrix(ref_points), get_distance_matrix(other_points)
     for vx, vy, vz in [(0, 1, 2), (0, 2, 1), (1, 0, 2), (1, 2, 0), (2, 0, 1), (2, 1, 0)]:
         for sx in [-1, 1]:
             for sy in [-1, 1]:
@@ -67,13 +66,13 @@ def points_relative_to_ref(ref_points, other_points):
         return set(), None, (vx, vy, vz), (sx, sy, sz)
     return set(map(lambda op: (scanner_position[0] + sx * op[vx],
                                scanner_position[1] + sy * op[vy],
-                               scanner_position[2] + sz * op[vz]), other_points)), scanner_position, (vx, vy, vz), (
-               sx, sy, sz)
+                               scanner_position[2] + sz * op[vz]),
+                   other_points)), scanner_position, (vx, vy, vz), (sx, sy, sz)
 
 
 def find_overlapping_for(v, mapping, i):
     for j in range(i + 1, len(v)):
-        if overlaps(v[i], v[j]):
+        if overlaps_with(v[i], v[j]):
             if i not in mapping:
                 mapping[i] = []
             mapping[i].append(j)
@@ -81,17 +80,17 @@ def find_overlapping_for(v, mapping, i):
                 mapping[j] = []
             mapping[j].append(i)
             if debug:
-                print('overlapping: {0} <-> {1} '.format(i, j))
+                print('overlapping: {} <-> {} '.format(i, j))
 
 
-def visit_optimized(v, key, mapping, visited, results):
+def visit(v, key, mapping, visited, results):
     threads, subresults = [], []
     for adj in mapping[key]:
         if adj not in visited:
             visited.add(adj)
             if debug:
                 print('spawning thread to visit {} from {}...'.format(adj, key))
-            threads.append(threading.Thread(target=visit_optimized, args=(v, adj, mapping, visited, subresults)))
+            threads.append(threading.Thread(target=visit, args=(v, adj, mapping, visited, subresults)))
             threads[-1].start()
     for t in threads:
         t.join()
@@ -101,8 +100,9 @@ def visit_optimized(v, key, mapping, visited, results):
         ref = ref.union(new_points)
         key_scanners.append(adj_scanner)
         for sc in adj_relative_scanners:
-            key_scanners.append(
-                (adj_scanner[0] + sx * sc[vx], adj_scanner[1] + sy * sc[vy], adj_scanner[2] + sz * sc[vz]))
+            key_scanners.append((adj_scanner[0] + sx * sc[vx],
+                                 adj_scanner[1] + sy * sc[vy],
+                                 adj_scanner[2] + sz * sc[vz]))
     v[key] = list(ref)
     results.append((key, key_scanners))
 
@@ -112,9 +112,8 @@ def aggregate_all_points(v):
 
     # bulding the graph
     for i in range(len(v)):
-        t = threading.Thread(target=find_overlapping_for, args=(v, mapping, i))
-        threads.append(t)
-        t.start()
+        threads.append(threading.Thread(target=find_overlapping_for, args=(v, mapping, i)))
+        threads[-1].start()
     for t in threads:
         t.join()
     if debug:
@@ -122,7 +121,7 @@ def aggregate_all_points(v):
 
     result = []
     # DFS-like inspection
-    visit_optimized(v, 0, mapping, {0}, result)
+    visit(v, 0, mapping, {0}, result)
     return v[0], result[0][1]
 
 

@@ -4,7 +4,7 @@ import time
 def measure(ndigits):
     def _(f):
         def __(*args):
-            print('executing {}..'.format(f.__name__))
+            print('executing {}...'.format(f.__name__))
             start = time.time()
             f(*args)
             end = time.time()

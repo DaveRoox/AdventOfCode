@@ -1,129 +1,40 @@
-import threading
-
-
-def rows_match(r1, r2, vx, vy, vz, sx, sy, sz):
-    sr2, count = {}, 0
-    for p in r1:
-        sr2[p] = 1 + sr2.get(p, 0)
-    for p in r2:
-        p = (sx * p[vx], sy * p[vy], sz * p[vz])
-        if sr2.get(p, 0) > 0:
-            count += 1
-            if count >= min(12, len(r1)):
-                return True
-            sr2[p] -= 1
-    return False
-
-
 def configurations():
-    for vx, vy, vz in [(0, 1, 2), (0, 2, 1), (1, 0, 2), (1, 2, 0), (2, 0, 1), (2, 1, 0)]:
-        for sx in [-1, 1]:
-            for sy in [-1, 1]:
-                for sz in [-1, 1]:
-                    yield vx, vy, vz, sx, sy, sz
+    vx, vy, vz, sx, sy, sz = 0, 1, 2, 1, 1, 1
+    for _ in range(4):
+        for _ in range(4):
+            yield vx, vy, vz, sx, sy, sz
+            vx, vy, vz, sx, sy, sz = vz, vy, vx, sz, sy, -sx
+        yield vy, vx, vz, sy, -sx, sz
+        yield vy, vx, vz, -sy, sx, sz
+        vx, vy, vz, sx, sy, sz = vx, vz, vy, sx, sz, -sy
 
 
-def overlaps_with(ref_points, other_points):
-    def can_overlap(m1, m2, vx, vy, vz, sx, sy, sz):
-        return any(rows_match(r1, r2, vx, vy, vz, sx, sy, sz) for r1 in m1 for r2 in m2)
-
-    ref_dist_matrix, other_dist_matrix = get_distance_matrix(ref_points), get_distance_matrix(other_points)
-    for vx, vy, vz, sx, sy, sz in configurations():
-        if can_overlap(ref_dist_matrix, other_dist_matrix, vx, vy, vz, sx, sy, sz):
-            return True
-    return False
-
-
-def get_scanner_position(ref_points, other_points):
-    def overlapping(m1, m2, vx, vy, vz, sx, sy, sz):
-        for i, row1 in enumerate(m1):
-            for j, row2 in enumerate(m2):
-                if rows_match(row1, row2, vx, vy, vz, sx, sy, sz):
-                    return i, j
-        return -1, -1
-
-    ref_dist_matrix, other_dist_matrix = get_distance_matrix(ref_points), get_distance_matrix(other_points)
-    for vx, vy, vz, sx, sy, sz in configurations():
-        i, j = overlapping(ref_dist_matrix, other_dist_matrix, vx, vy, vz, sx, sy, sz)
-        if i >= 0 and j >= 0:
-            ref_point, other_point = ref_points[i], other_points[j]
-            scanner_position = (ref_point[0] - sx * other_point[vx],
-                                ref_point[1] - sy * other_point[vy],
-                                ref_point[2] - sz * other_point[vz])
-            return scanner_position, (vx, vy, vz), (sx, sy, sz)
-    return None, (0, 1, 2), (1, 1, 1)
-
-
-def get_distance_matrix(points):
+def traslated_points_to_ref(ref_points, other_points):
     def diff(p1, p2):
-        return tuple(map(lambda i: p1[i] - p2[i], range(len(p1))))
+        return tuple(c1 - c2 for c1, c2 in zip(p1, p2))
 
-    return [[diff(point1, point2) for point2 in points] for point1 in points]
-
-
-def points_relative_to_ref(ref_points, other_points):
-    scanner_position, (vx, vy, vz), (sx, sy, sz) = get_scanner_position(ref_points, other_points)
-    if scanner_position is None:
-        return set(), None, (vx, vy, vz), (sx, sy, sz)
-    return set(map(lambda op: (scanner_position[0] + sx * op[vx],
-                               scanner_position[1] + sy * op[vy],
-                               scanner_position[2] + sz * op[vz]),
-                   other_points)), scanner_position, (vx, vy, vz), (sx, sy, sz)
+    for vx, vy, vz, sx, sy, sz in configurations():
+        other_points_rotated = [(sx * op[vx], sy * op[vy], sz * op[vz]) for op in other_points]
+        for ref_point in ref_points:
+            for other_point in other_points_rotated:
+                offset = diff(other_point, ref_point)
+                c = {diff(other_point, offset) for other_point in other_points_rotated}
+                if len(c & ref_points) >= 12:
+                    return c, diff(ref_point, other_point)
+    return set(), None
 
 
-def find_overlapping_for(v, mapping, i):
-    for j in range(i + 1, len(v)):
-        if overlaps_with(v[i], v[j]):
-            if i not in mapping:
-                mapping[i] = []
-            mapping[i].append(j)
-            if j not in mapping:
-                mapping[j] = []
-            mapping[j].append(i)
-            if debug:
-                print('overlapping: {} <-> {} '.format(i, j))
-
-
-def visit(v, key, mapping, visited, results):
-    threads, subresults = [], []
-    for adj in mapping[key]:
-        if adj not in visited:
-            visited.add(adj)
-            if debug:
-                print('spawning thread to visit {} from {}...'.format(adj, key))
-            threads.append(threading.Thread(target=visit, args=(v, adj, mapping, visited, subresults)))
-            threads[-1].start()
-    for t in threads:
-        t.join()
-    ref, key_scanners = set(v[key]), []
-    for adj, adj_relative_scanners in subresults:
-        new_points, adj_scanner, (vx, vy, vz), (sx, sy, sz) = points_relative_to_ref(v[key], v[adj])
-        ref = ref.union(new_points)
-        key_scanners.append(adj_scanner)
-        for sc in adj_relative_scanners:
-            key_scanners.append((adj_scanner[0] + sx * sc[vx],
-                                 adj_scanner[1] + sy * sc[vy],
-                                 adj_scanner[2] + sz * sc[vz]))
-    v[key] = list(ref)
-    results.append((key, key_scanners))
-
-
-def aggregate_all_points(v):
-    mapping, threads = {}, []
-
-    # bulding the graph
-    for i in range(len(v)):
-        threads.append(threading.Thread(target=find_overlapping_for, args=(v, mapping, i)))
-        threads[-1].start()
-    for t in threads:
-        t.join()
-    if debug:
-        print(mapping)
-
-    result = []
-    # DFS-like inspection
-    visit(v, 0, mapping, {0}, result)
-    return v[0], result[0][1]
+def fold_points(points_by_scanner):
+    q, ref, scanners = points_by_scanner[1:], set(points_by_scanner[0]), [(0, 0, 0)]
+    while q:
+        others = q.pop(0)
+        c, scanner = traslated_points_to_ref(ref, others)
+        if c:
+            ref |= c
+            scanners.append(scanner)
+        else:
+            q.append(others)
+    return ref, scanners
 
 
 def part1(v):
@@ -141,6 +52,6 @@ with open("input/day19.txt") as f:
     debug = True
     v = list(
         map(lambda l: list(map(lambda l: tuple(map(int, l.split(','))), l.split('\n')[1:])), f.read().split('\n\n')))
-    ref_scanner_points, scanners = aggregate_all_points(v)
+    ref_scanner_points, scanners = fold_points(v)
     part1(ref_scanner_points)
     part2(scanners)

@@ -12,11 +12,8 @@ def index_for_position(input_image, i, j, background):
 
 
 def produce_output_image(iea, input_image, background):
-    output_image_set = set()
-    for i in range(-1, 1 + len(input_image)):
-        for j in range(-1, 1 + len(input_image[0])):
-            if iea[index_for_position(input_image, i, j, background)] == '#':
-                output_image_set.add((i, j))
+    output_image_set = {(i, j) for i in range(-1, 1 + len(input_image)) for j in range(-1, 1 + len(input_image[0])) if
+                        iea[index_for_position(input_image, i, j, background)] == '#'}
     return [['#' if (i, j) in output_image_set else '.' for j in range(-1, 1 + len(input_image[0]))]
             for i in range(-1, 1 + len(input_image))], {'.': 0, '#': 1}[iea[[0, -1][background]]]
 

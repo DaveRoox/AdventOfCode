@@ -18,7 +18,7 @@ def produce_output_image(iea, input_image, background):
             if iea[index_for_position(input_image, i, j, background)] == '#':
                 output_image_set.add((i, j))
     return [['#' if (i, j) in output_image_set else '.' for j in range(-1, 1 + len(input_image[0]))]
-            for i in range(-1, 1 + len(input_image))], {'.': 0, '#': 1}[iea[0] if background == 0 else iea[-1]]
+            for i in range(-1, 1 + len(input_image))], {'.': 0, '#': 1}[iea[[0, -1][background]]]
 
 
 def count_lit_after_n_steps(iea, input_image, n):

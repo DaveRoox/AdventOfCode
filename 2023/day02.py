@@ -17,7 +17,7 @@ def part1(games):
 
 
 def part2(games):
-    print(sum(map(lambda e: reduce(lambda v, acc: v * acc, e.values(), 1), games.values())))
+    print(sum(map(lambda e: reduce(int.__mul__, e.values()), games.values())))
 
 
 with open("input/day02.txt") as f:

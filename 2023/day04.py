@@ -4,10 +4,9 @@ def part1(cards):
 def part2(cards):
     cards_m = { i: 1 for i in range(len(cards))}
     for i, card in enumerate(cards):
-        s1, s2 = card
-        n = len(set(s1).intersection(s2))
+        n = len(set.intersection(*card))
         for j in range(i+1, min(i+n+1, len(cards_m))):
-            cards_m[j] = cards_m[j]+cards_m[i]
+            cards_m[j] += cards_m[i]
     print(sum(cards_m.values()))
 
 with open("input/day04.txt") as f:

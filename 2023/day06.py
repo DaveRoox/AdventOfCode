@@ -2,11 +2,9 @@ from functools import reduce
 from math import ceil, floor
 
 def count_solutions(T, D):
-    low = (T - (T*T - 4*D)**.5) / 2
-    low = (low+1) if low.is_integer() else ceil(low)
-    high = (T + (T*T - 4*D)**.5) / 2
-    high = (high-1) if high.is_integer() else floor(high)
-    return int(high - low + 1)
+    low = floor((T - (T*T - 4*D)**.5) / 2) + 1
+    high = ceil((T + (T*T - 4*D)**.5) / 2) - 1
+    return high - low + 1
 
 def part1(times_distances_pairs):
     print(reduce(int.__mul__, map(lambda item: count_solutions(*item), times_distances_pairs)))

@@ -1,10 +1,11 @@
 def calibration_num(line):
     v = list(map(int, filter(lambda c: c.isdigit(), line)))
-    return 10* v[0] + v[-1]
+    return 10 * v[0] + v[-1]
 
 
 def shrink(line):
-    lookup_table = {n[:2]: (n, str(i+1)) for i, n in enumerate(['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'])}
+    lookup_table = {n[:2]: (n, str(i+1)) for i, n in enumerate(
+        ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'])}
     new_line_parts, idx = [], 0
     while idx < len(line):
         new_line_part, offset, key = line[idx], 1, line[idx:idx+2]

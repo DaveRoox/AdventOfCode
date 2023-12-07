@@ -7,6 +7,7 @@ def location_for(seed, mappings):
                 break
     return v
 
+
 def seed_for(location, mappings):
     v = location
     for mapping in mappings[::-1]:
@@ -15,6 +16,7 @@ def seed_for(location, mappings):
                 v = source + v - dest
                 break
     return v
+
 
 def part1(seeds, mappings):
     print(min(location_for(seed, mappings) for seed in seeds))
@@ -36,6 +38,7 @@ def part2(seeds, mappings):
 with open("input/day05.txt") as f:
     blocks = f.read().split('\n\n')
     seeds = list(map(int, blocks[0].split(': ')[1].split()))
-    mappings = [list(map(lambda m: tuple(map(int, m.split())), block.split('\n')[1:])) for block in blocks[1:]]
+    mappings = [list(map(lambda m: tuple(map(int, m.split())),
+                     block.split('\n')[1:])) for block in blocks[1:]]
     part1(seeds, mappings)
     part2(seeds, mappings)

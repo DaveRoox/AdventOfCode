@@ -54,7 +54,8 @@ with open("input/day02.txt") as f:
             # { 'Game A': 'X1a color1, ..., XNa colorN, ... , X1k color1, ..., XNk colorN' }
             dict(
                 map(
-                    lambda l: l.replace('\n', '').replace(';', ',').split(': '),
+                    lambda l: l.replace('\n', '').replace(
+                        ';', ',').split(': '),
                     f.readlines()
                 )
             ).items()

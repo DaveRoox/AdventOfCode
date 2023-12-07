@@ -1,13 +1,15 @@
 def part1(cards):
     print(sum(map(lambda card: int(2 ** (len(set.intersection(*card)) - 1)), cards)))
 
+
 def part2(cards):
-    cards_m = { i: 1 for i in range(len(cards))}
+    cards_m = {i: 1 for i in range(len(cards))}
     for i, card in enumerate(cards):
         n = len(set.intersection(*card))
         for j in range(i+1, min(i+n+1, len(cards_m))):
             cards_m[j] += cards_m[i]
     print(sum(cards_m.values()))
+
 
 with open("input/day04.txt") as f:
     # (Final) Transform input from:

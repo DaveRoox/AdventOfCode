@@ -28,7 +28,7 @@ def find_all_accepted_constraints(workflow, workflows, constraints):
     if workflow == 'A':
         return [constraints]
 
-    all_subranges = []
+    all_constraints = []
     for (pred, next_workflow) in workflows[workflow]:
         new_constraints = {k: v for k, v in constraints.items()}
         if pred.op != '*':
@@ -42,9 +42,9 @@ def find_all_accepted_constraints(workflow, workflows, constraints):
                 nhi = pred.c
             new_constraints[pred.field] = (lo, hi)
             constraints[pred.field] = (nlo, nhi)
-        for sub_range in find_all_accepted_constraints(next_workflow, workflows, new_constraints):
-            all_subranges.append(sub_range)
-    return all_subranges
+        for constraint in find_all_accepted_constraints(next_workflow, workflows, new_constraints):
+            all_constraints.append(constraint)
+    return all_constraints
 
 
 def combs(range):
@@ -67,11 +67,11 @@ def intersection(range1, range2):
     return range3
 
 
-def distinct_combs(ranges):
-    res = sum(combs(r) for r in ranges)
-    for r1 in range(len(ranges) - 1):
-        for r2 in range(r1 + 1, len(ranges)):
-            res -= combs(intersection(ranges[r1], ranges[r2]))
+def distinct_combs(constraints):
+    res = sum(combs(r) for r in constraints)
+    for r1 in range(len(constraints) - 1):
+        for r2 in range(r1 + 1, len(constraints)):
+            res -= combs(intersection(constraints[r1], constraints[r2]))
     return res
 
 
@@ -98,8 +98,9 @@ def part1(parts, workflows):
 
 
 def part2(workflows):
-    ranges = find_all_accepted_constraints('in', workflows, {'x': (1, 4000), 'm': (1, 4000), 'a': (1, 4000), 's': (1, 4000)})
-    print(distinct_combs(ranges))
+    constraints = find_all_accepted_constraints('in', workflows,
+                                                {'x': (1, 4000), 'm': (1, 4000), 'a': (1, 4000), 's': (1, 4000)})
+    print(distinct_combs(constraints))
 
 
 with open("input/day19.txt") as f:

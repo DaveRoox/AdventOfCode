@@ -77,7 +77,7 @@ def distinct_combs(constraints):
 
 def parse_desc(raw_desc):
     parts = raw_desc.split(':')
-    for op in '<>=':
+    for op in '<>':
         cond_parts = parts[0].split(op)
         if len(cond_parts) > 1:
             return Predicate(op=op, c=int(cond_parts[1]), field=cond_parts[0]), parts[1]
